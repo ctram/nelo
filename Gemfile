@@ -54,3 +54,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "devise", "~> 4.4"
 gem "pg", "~> 1.0"
+
+gem "twitter-bootstrap-rails", "~> 4.0"
