@@ -6,18 +6,10 @@ class ApplicationController < ActionController::Base
   private
 
   def redirect_if_not_logged_in
-    redirect_to 'home#index' unless signed_in?
+    redirect_to '/users/sign_in' unless signed_in?
   end
   
   def set_default_react_bundle
     @react_bundle = 'navbar-bundle'
-  end
-
-  def after_sign_in_path_for
-    redirect_to 'entries#index'
-  end
-
-  def after_sign_out_path_for
-    redirect_to 'home#index'
   end
 end
