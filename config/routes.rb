@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  get 'hello_world', to: 'hello_world#index'
-  devise_for :users
-
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations',
+    passwords: 'users/passwords'
+  }
   root 'home#index'
+
+  # get '/users/sign-up', to: ''
 end
