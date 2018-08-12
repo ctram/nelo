@@ -24,8 +24,8 @@ export default class Navbar extends React.Component {
         >
           <span className="navbar-toggler-icon" />
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav mr-auto">
+        <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          <ul className="navbar-nav">
             {!currentUser && (
               <li className="nav-item">
                 <a className="nav-link" href="/users/sign_up">
@@ -42,15 +42,22 @@ export default class Navbar extends React.Component {
             )}
             {currentUser && (
               <li className="nav-item">
-                <a className="nav-link" href="/users/sign_out">
-                  Sign Out
+                <a className="nav-link" href="/entries/new">
+                  Add Entry
                 </a>
               </li>
             )}
             {currentUser && (
               <li className="nav-item">
-                <a className="nav-link" href="/entries/new">
-                  Add Entry
+                <a className="nav-link" href="http://localhost:3000/entries">
+                  Entries
+                </a>
+              </li>
+            )}
+            {currentUser && (
+              <li className="nav-item">
+                <a className="nav-link" href="/users/sign_out">
+                  Sign Out
                 </a>
               </li>
             )}
