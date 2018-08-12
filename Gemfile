@@ -55,7 +55,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise", "~> 4.4"
 gem "pg", "~> 1.0"
 
-gem "twitter-bootstrap-rails", "~> 4.0"
 gem "react_on_rails", "~> 11.1"
 
 gem 'mini_racer', platforms: :ruby
