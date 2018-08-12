@@ -1,5 +1,4 @@
 import React from 'react';
-import constants from '../constants';
 
 export default class Navbar extends React.Component {
   constructor(props) {
@@ -45,6 +44,13 @@ export default class Navbar extends React.Component {
               <li className="nav-item">
                 <a className="nav-link" href="/users/sign_out">
                   Sign Out
+                </a>
+              </li>
+            )}
+            {currentUser && (
+              <li className="nav-item">
+                <a className="nav-link" href="/entries/new">
+                  Add Entry
                 </a>
               </li>
             )}
