@@ -5,6 +5,4 @@ Rails.application.routes.draw do
     passwords: 'users/passwords'
   }
   root 'home#index'
-
-  # get '/users/sign-up', to: ''
 end
