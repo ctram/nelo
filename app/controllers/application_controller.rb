@@ -1,12 +1,23 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  around_action :set_current_user_to_props
+  before_action :set_default_react_bundle
+  before_action :redirect_if_not_logged_in
 
   private
 
-  def set_current_user_to_props
-    @props = { currentUser: current_user }
-    yield
+  def redirect_if_not_logged_in
+    redirect_to 'home#index' unless signed_in?
   end
   
+  def set_default_react_bundle
+    @react_bundle = 'navbar-bundle'
+  end
+
+  def after_sign_in_path_for
+    redirect_to 'entries#index'
+  end
+
+  def after_sign_out_path_for
+    redirect_to 'home#index'
+  end
 end
