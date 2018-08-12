@@ -13,7 +13,7 @@
   </head>
 
   <body>
-    <%= react_component("Navbar", prerender: false) %>
+    <%= react_component("Navbar", props: @props, prerender: false) %>
     <%= yield %>
   </body>
 </html>
