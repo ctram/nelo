@@ -1,1 +1,0 @@
-web: npm install && bundle exec rails server -p $PORT
