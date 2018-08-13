@@ -24,10 +24,10 @@ export default class EntryForm extends React.Component {
             <input type="hidden" name="authenticity_token" value={authenticityToken} />
             <div className="form-group">
               <label htmlFor="title-input">Title</label>
-              <input id="title-input" className="form-control" name="entry[title]" />
+              <input id="title-input" className="form-control" name="entry[title]" required />
             </div>
             <div className="form-group">
-              <textarea className="form-control" name="entry[content]" />
+              <textarea className="form-control" name="entry[content]" required />
             </div>
             <button className="btn btn-primary">Save</button>
           </form>
