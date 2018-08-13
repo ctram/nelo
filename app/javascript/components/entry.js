@@ -1,8 +1,15 @@
 import React from 'react';
+import Modal from './modal';
+import CONSTANTS from '../constants';
 
 export default class Entry extends React.Component {
   constructor(props) {
     super(props);
+    this.delete = this.delete.bind(this);
+  }
+
+  delete() {
+    this.props.onDelete(this.props.entry.id);
   }
 
   render() {
@@ -24,7 +31,11 @@ export default class Entry extends React.Component {
           >
             Edit
           </button>
-          <button role="button" className="btn btn-outline-danger btn-small" onClick={this.delete}>
+          <button
+            role="button"
+            className="btn btn-outline-danger btn-small"
+            onClick={this.delete}
+          >
             Delete
           </button>
         </div>
