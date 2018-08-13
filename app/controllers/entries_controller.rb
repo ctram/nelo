@@ -1,14 +1,10 @@
 class EntriesController < ApplicationController
   def index
-    puts "index called"
-    @entries = Entry.where(user_id: current_user.id)
-    @react_bundle = 'entries-bundle'
+    @entries = Entry.where(user_id: current_user.id).reverse_order
   end
   
   def new
-    puts "new called"
     @entry = Entry.new(user_id: current_user.id)
-    @react_bundle = 'entry-form-bundle'
   end
   
   def show
