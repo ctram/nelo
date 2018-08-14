@@ -1,4 +1,7 @@
 import React from 'react';
+import CONSTANTS from '../constants';
+import ModalConfirmDeleteEntry from './modals/modal-confirm-delete-entry';
+import entryActions from '../actions/entry';
 
 export default class EntryForm extends React.Component {
   constructor(props) {
@@ -12,12 +15,15 @@ export default class EntryForm extends React.Component {
       heading: isNew ? 'Edit Entry' : 'Create Entry',
       title,
       content,
-      editMode: isNew
+      editMode: isNew,
+      modalConfirmDeleteVisible: false
     };
 
     this.onChange = this.onChange.bind(this);
     this.enterEditMode = this.enterEditMode.bind(this);
     this.cancelEditMode = this.cancelEditMode.bind(this);
+    this.modalConfirmDelete = this.modalConfirmDelete.bind(this);
+    this.cancelDelete = this.cancelDelete.bind(this);
   }
 
   onChange(e) {
@@ -44,8 +50,25 @@ export default class EntryForm extends React.Component {
     });
   }
 
+  delete(id) {
+    entryActions.deleteEntry(id);
+  }
+
+  cancelDelete() {
+    this.setState({ modalConfirmDeleteVisible: false });
+  }
+
+  modalConfirmDelete() {
+    this.setState({ modalConfirmDeleteVisible: true });
+  }
+
+  save() {
+    fetch(CONSTANTS.appDomainURL, { method: '' });
+  }
+
   render() {
-    const { heading, title, content, isNew, editMode } = this.state;
+    const { heading, title, content, isNew, editMode, modalConfirmDeleteVisible } = this.state;
+    const { entry } = this.props;
     const authenticityToken = document.getElementsByTagName('meta')[1].getAttribute('content');
 
     let url = '/entries';
@@ -57,6 +80,12 @@ export default class EntryForm extends React.Component {
     return (
       <div className="row justify-content-center entry-form">
         <div className="col-6">
+          <ModalConfirmDeleteEntry
+            itemToDeleteID={entry.id}
+            visible={modalConfirmDeleteVisible}
+            onDelete={this.delete}
+            onCancelDelete={this.cancelDelete}
+          />
           <h2>{heading}</h2>
           <form action={url} method="POST" acceptCharset="UTF-8">
             {!isNew && <input name="_method" type="hidden" value="patch" />}
@@ -88,7 +117,7 @@ export default class EntryForm extends React.Component {
             </div>
             <div className="btns">
               {editMode && (
-                <button type="button" className="btn btn-primary mr-3">
+                <button type="submit" className="btn btn-primary mr-3">
                   Save
                 </button>
               )}
@@ -110,7 +139,11 @@ export default class EntryForm extends React.Component {
                 )}
               {!isNew &&
                 !editMode && (
-                  <button type="button" className="btn btn-primary mr-3">
+                  <button
+                    type="button"
+                    className="btn btn-primary mr-3"
+                    onClick={this.modalConfirmDelete}
+                  >
                     Delete
                   </button>
                 )}
