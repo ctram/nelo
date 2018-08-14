@@ -28,6 +28,10 @@ export default class Entries extends React.Component {
     );
   }
 
+  edit(id) {
+    window.location.href = CONSTANTS + '/entries/' + `${id}`;
+  }
+
   cancelDelete() {
     this.setState({ modalAreYouSureVisible: false });
   }
