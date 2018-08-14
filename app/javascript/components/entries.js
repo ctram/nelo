@@ -16,9 +16,16 @@ export default class Entries extends React.Component {
   }
 
   delete(id) {
-    fetch(CONSTANTS.appDomainURL + '/entries' + `/${id}`, { method: 'DELETE' }).then(() => {
-      this.setState({ modalAreYouSureVisible: false });
-    });
+    const authenticityToken = document.getElementsByTagName('meta')[1].getAttribute('content');
+
+    const fd = new FormData();
+    fd.set('authenticity_token', authenticityToken);
+
+    fetch(CONSTANTS.appDomainURL + '/entries' + `/${id}`, { method: 'DELETE', body: fd }).then(
+      () => {
+        window.location.href = CONSTANTS.appDomainURL;
+      }
+    );
   }
 
   cancelDelete() {
@@ -53,7 +60,7 @@ export default class Entries extends React.Component {
   render() {
     let { entries } = this.props;
     const { modalDetails, modalAreYouSureVisible } = this.state;
-    let entriesDOM = <div className="text-center">'No entries'</div>;
+    let entriesDOM = <div className="text-center">No entries</div>;
 
     if (entries.length > 0) {
       entriesDOM = entries.map((entry, idx) => {
@@ -68,9 +75,7 @@ export default class Entries extends React.Component {
 
     return (
       <div className="row justify-content-center">
-        {modalAreYouSureVisible && (
-          <Modal details={modalDetails} visible={modalAreYouSureVisible} />
-        )}
+        <Modal cssID="modal-are-you-sure" details={modalDetails} visible={modalAreYouSureVisible} />
         <div className="col-6">
           <h2 className="text-center">Entries</h2>
           {entriesDOM}

@@ -3,48 +3,32 @@ import React from 'react';
 export default class Modal extends React.Component {
   constructor(props) {
     super(props);
-    const {
-      details: { cssID }
-    } = props;
-
-    $('#' + cssID).modal({});
+    this.state = { visible: false };
   }
 
-  componentDidMount() {
-    this.toggleVisibility();
-  }
-
-  componentWillReceiveProps() {
-    this.toggleVisibility();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.visible !== this.props.visible) {
+      this.setState({ visible: nextProps.visible });
+      this.toggleVisibility();
+    }
   }
 
   toggleVisibility() {
-    const {
-      details: { cssID }
-    } = this.props;
-
+    const { cssID } = this.props;
     $('#' + cssID).modal('toggle');
   }
 
   componentWillUnmount() {
-    const {
-      details: { cssID }
-    } = this.props;
-
+    const { cssID } = this.props;
     $('#' + cssID).modal('dispose');
   }
 
   render() {
-    const { details } = this.props;
-
-    if (!details) {
-      return null;
-    }
-
-    const { title, body, footer, cssID } = details;
+    const { details, cssID } = this.props;
+    const { title, body, footer } = details;
 
     return (
-      <div className={'modal'} id={cssID} tabIndex="-1" role="dialog">
+      <div className="modal" id={cssID} tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
@@ -61,3 +45,7 @@ export default class Modal extends React.Component {
     );
   }
 }
+
+Modal.defaultProps = {
+  details: {}
+};

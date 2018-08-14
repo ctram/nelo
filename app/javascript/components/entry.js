@@ -1,6 +1,4 @@
 import React from 'react';
-import Modal from './modal';
-import CONSTANTS from '../constants';
 
 export default class Entry extends React.Component {
   constructor(props) {
