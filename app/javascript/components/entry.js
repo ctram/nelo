@@ -1,4 +1,5 @@
 import React from 'react';
+import CONSTANTS from '../constants';
 
 export default class Entry extends React.Component {
   constructor(props) {
@@ -11,9 +12,8 @@ export default class Entry extends React.Component {
   }
 
   render() {
-    const {
-      entry: { title: entryTitle, content: entryContent }
-    } = this.props;
+    const { entry } = this.props;
+    const { title: entryTitle, content: entryContent } = entry;
 
     return (
       <div className="entry d-flex justify-content-between">
@@ -22,18 +22,13 @@ export default class Entry extends React.Component {
           <div>{entryContent}</div>
         </div>
         <div className="entry__actions">
-          <button
-            role="button"
+          <a
             className="btn btn-outline-primary btn-small mr-3"
-            onClick={this.edit}
+            href={CONSTANTS.appDomainURL + '/entries/' + `${entry.id}`}
           >
             Edit
-          </button>
-          <button
-            role="button"
-            className="btn btn-outline-danger btn-small"
-            onClick={this.delete}
-          >
+          </a>
+          <button role="button" className="btn btn-outline-danger btn-small" onClick={this.delete}>
             Delete
           </button>
         </div>
