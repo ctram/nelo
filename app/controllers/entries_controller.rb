@@ -16,6 +16,12 @@ class EntriesController < ApplicationController
     redirect_to entries_path
   end
 
+  def update
+    @entry = Entry.find(params[:id])
+    @entry.update(entry_params)
+    redirect_to 'entries#index'
+  end
+
   def destroy
     Entry.find(params[:id]).destroy
   end
