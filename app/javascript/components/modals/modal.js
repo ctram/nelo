@@ -24,8 +24,7 @@ export default class Modal extends React.Component {
   }
 
   render() {
-    const { details, cssID } = this.props;
-    const { title, body, footer } = details;
+    const { title, body, footer, cssID } = this.props;
 
     return (
       <div className="modal" id={cssID} tabIndex="-1" role="dialog">
