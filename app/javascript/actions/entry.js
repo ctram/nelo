@@ -2,13 +2,14 @@ import CONSTANTS from '../constants';
 
 function deleteEntry(id) {
   const authenticityToken = document.getElementsByTagName('meta')[1].getAttribute('content');
+  const destinationURL = CONSTANTS.appDomainURL + '/entries/' + id;
+  const body = `authenticity_token=${authenticityToken}&utf8=✓&_method=DELETE`;
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-  const fd = new FormData();
-  fd.set('authenticity_token', authenticityToken);
-  fd.set('_method', 'DELETE');
-  fd.set('utf8', '✓');
+  const request = new Request(destinationURL, { method: 'POST', body, headers });
 
-  fetch(CONSTANTS.appDomainURL + '/entries' + `/${id}`, { method: 'POST', body: fd }).then(() => {
+  fetch(request).then(() => {
     window.location.href = CONSTANTS.appDomainURL;
   });
 }
