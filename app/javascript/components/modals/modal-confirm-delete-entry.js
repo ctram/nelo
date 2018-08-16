@@ -17,7 +17,7 @@ export default class ModalConfirmDeleteEntry extends React.Component {
         >
           Delete
         </button>
-        <button className="btn btn-info" onClick={this.props.onCancelDelete}>
+        <button className="btn btn-info" onClick={this.props.onCancel}>
           Cancel
         </button>
       </div>
