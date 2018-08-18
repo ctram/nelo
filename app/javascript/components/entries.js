@@ -46,10 +46,14 @@ export default class Entries extends React.Component {
   render() {
     let { entries } = this.props;
     const { modalConfirmDeleteVisible, itemToDeleteID, messages, message } = this.state;
-    let entriesDOM = <div className="text-center">No entries</div>;
+    let entriesDOM = <h3 className="text-center">No entries, add some!</h3>;
     let messagesDOM = messages.map(message => {
       return <Message message={message} key={message.id} />;
     });
+
+    if (messages.length === 0) {
+      messagesDOM = <h3 className="text-center">Waiting for some messages...</h3>;
+    }
 
     if (entries.length > 0) {
       entriesDOM = entries.map((entry, idx) => {
@@ -73,7 +77,7 @@ export default class Entries extends React.Component {
 
     return (
       <ErrorBoundary>
-        <div className="row justify-content-center">
+        <div className="row entries justify-content-center">
           <ModalConfirmDeleteEntry
             onCancel={this.cancelDelete}
             onDelete={this.delete}
@@ -82,14 +86,14 @@ export default class Entries extends React.Component {
           />
           <div className="col-6">
             <h2 className="text-center">Entries</h2>
-            {entriesDOM}
+            <div className="entries-section">{entriesDOM}</div>
             <hr />
             <div className="messages-section">
               <div className="messages-section__form">
                 <MessageForm message={message} />
               </div>
               <hr />
-              <h2>Messages</h2>
+              <h2 className="text-center">Messages</h2>
               <div className="messages-section__messages">{messagesDOM}</div>
             </div>
           </div>
