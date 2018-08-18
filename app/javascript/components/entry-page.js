@@ -17,14 +17,11 @@ export default class EntryPage extends React.Component {
     this.originalEntry = Object.assign({}, props.entry);
     this.onCancelEditMode = this.onCancelEditMode.bind(this);
     this.onClickEdit = this.onClickEdit.bind(this);
-    this.onClickDelete = this.onClickDelete.bind(this);
     this.delete = this.delete.bind(this);
     this.cancelDelete = this.cancelDelete.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.onClickDelete = this.onClickDelete.bind(this);
   }
-
-  onSubmit(e) {}
 
   onChange(e) {
     const { value } = e.target;
@@ -79,7 +76,6 @@ export default class EntryPage extends React.Component {
           onChange={this.onChange}
           onCancelEditMode={this.onCancelEditMode}
           onClickDelete={this.onClickDelete}
-          onSubmit={this.onSubmit}
         />
       );
     } else {

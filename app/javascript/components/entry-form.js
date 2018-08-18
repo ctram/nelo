@@ -87,7 +87,11 @@ export default class EntryForm extends React.Component {
                 </button>
               )}
               {!isNew && (
-                <button type="button" className="btn btn-danger mr-3" onClick={this.onClickDelete}>
+                <button
+                  type="button"
+                  className="btn btn-danger mr-3"
+                  onClick={this.props.onClickDelete}
+                >
                   Delete
                 </button>
               )}
