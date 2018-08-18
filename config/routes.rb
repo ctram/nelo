@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   #   passwords: 'users/passwords'
   }
   resources :entries
-  resources :messages
+  resources :users, shallow: true do
+    resources :messages
+  end
   
   root 'entries#index'
 end
