@@ -23,7 +23,19 @@ export default class MessageForm extends React.Component {
       <div className="message-form">
         <form action={action}>
           <div className="form-group">
-            <textarea value={messageContent} onChange={this.onChange} placeholder="Leave a message"/>
+            <textarea
+              value={messageContent}
+              onChange={this.onChange}
+              placeholder="Leave a message"
+            />
+          </div>
+          <div class="form-group">
+            <label htmlFor="privacy-level-select">Privacy Level</label>
+            <select className="form-control" id="privacy-level-select">
+              <option value="private">Private</option>
+              <option value="friends">Friends</option>
+              <option value="public">Public</option>
+            </select>
           </div>
           <button className="btn btn-primary">Send</button>
         </form>
