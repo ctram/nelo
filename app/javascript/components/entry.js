@@ -1,27 +1,16 @@
 import React from 'react';
 import CONSTANTS from '../constants';
+import MarkupHelpers from './helpers/markup-helpers';
 
 export default class Entry extends React.Component {
   constructor(props) {
     super(props);
     this.delete = this.delete.bind(this);
     this.generateContentDOM = this.generateContentDOM.bind(this);
-    this.createMarkup = this.createMarkup.bind(this);
   }
 
   delete() {
     this.props.onDelete(this.props.entry.id);
-  }
-
-  generateContentDOM(content) {
-    return content
-      .replace(/<|>/g, '') // TODO: determine way for user to safely use brackets
-      .replace(/\r\n/g, '<br/>')
-      .replace(/ /g, '&nbsp;');
-  }
-
-  createMarkup(content) {
-    return { __html: this.generateContentDOM(content) };
   }
 
   render() {
@@ -34,7 +23,7 @@ export default class Entry extends React.Component {
           <h3>{entryTitle}</h3>
           <div
             className="entry__content"
-            dangerouslySetInnerHTML={this.createMarkup(entryContent)}
+            dangerouslySetInnerHTML={MarkupHelpers.createMarkup(entryContent)}
           />
         </div>
         <div className="entry__actions">
