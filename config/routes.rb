@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   #   passwords: 'users/passwords'
   }
   resources :entries
+  resources :messages
   
   root 'entries#index'
 end
