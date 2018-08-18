@@ -4,6 +4,7 @@ import CONSTANTS from '../constants';
 import ModalConfirmDeleteEntry from './modals/modal-confirm-delete-entry';
 import EntryActions from '../actions/entry';
 import ErrorBoundary from './error-boundary';
+import MessageForm from './message-form';
 
 export default class Entries extends React.Component {
   constructor(props) {
@@ -11,8 +12,19 @@ export default class Entries extends React.Component {
     this.delete = this.delete.bind(this);
     this.cancelDelete = this.cancelDelete.bind(this);
     this.state = {
-      modalConfirmDeleteVisible: false
+      modalConfirmDeleteVisible: false,
+      messages: []
     };
+  }
+
+  componentDidMount() {
+    fetch(CONSTANTS.appDomainURL + '/messages?type=recipient')
+      .then(res => {
+        return res.json();
+      })
+      .then(messages => {
+        this.setState({ messages });
+      });
   }
 
   delete(id) {
@@ -33,8 +45,11 @@ export default class Entries extends React.Component {
 
   render() {
     let { entries } = this.props;
-    const { modalConfirmDeleteVisible, itemToDeleteID } = this.state;
+    const { modalConfirmDeleteVisible, itemToDeleteID, messages, message } = this.state;
     let entriesDOM = <div className="text-center">No entries</div>;
+    let messagesDOM = messages.map(message => {
+      return <Message message={message} key={message.id} />;
+    });
 
     if (entries.length > 0) {
       entriesDOM = entries.map((entry, idx) => {
@@ -68,6 +83,15 @@ export default class Entries extends React.Component {
           <div className="col-6">
             <h2 className="text-center">Entries</h2>
             {entriesDOM}
+            <hr />
+            <div className="messages-section">
+              <div className="messages-section__form">
+                <MessageForm message={message} />
+              </div>
+              <hr />
+              <h2>Messages</h2>
+              <div className="messages-section__messages">{messagesDOM}</div>
+            </div>
           </div>
         </div>
       </ErrorBoundary>
