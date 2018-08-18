@@ -11,6 +11,10 @@ class EntriesController < ApplicationController
     @entry = Entry.find(params[:id])
   end
 
+  def edit
+    @entry = Entry.find(params[:id])
+  end
+
   def create
     current_user.entries.create(entry_params)
     redirect_to entries_path
