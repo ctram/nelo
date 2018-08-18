@@ -1,74 +1,34 @@
 import React from 'react';
-import CONSTANTS from '../constants';
-import ModalConfirmDeleteEntry from './modals/modal-confirm-delete-entry';
-import entryActions from '../actions/entry';
-
 export default class EntryForm extends React.Component {
   constructor(props) {
     super(props);
     const { entry } = props;
-    const { id, title, content } = entry;
+    const { id } = entry;
     const isNew = !id;
 
     this.state = {
       isNew,
-      heading: isNew ? 'Edit Entry' : 'Create Entry',
-      title,
-      content,
-      editMode: isNew,
-      modalConfirmDeleteVisible: false
+      heading: isNew ? 'Edit Entry' : 'Create Entry'
     };
-
-    this.onChange = this.onChange.bind(this);
-    this.enterEditMode = this.enterEditMode.bind(this);
-    this.cancelEditMode = this.cancelEditMode.bind(this);
-    this.modalConfirmDelete = this.modalConfirmDelete.bind(this);
-    this.cancelDelete = this.cancelDelete.bind(this);
   }
 
-  onChange(e) {
-    const { value } = e.target;
-    const type = e.target.getAttribute('data-type');
-    let newState = Object.assign({}, this.state);
-    newState[type] = value;
-    this.setState(newState);
-  }
-
-  enterEditMode() {
-    this.originalData = {
-      title: this.state.title,
-      content: this.state.content
+  componentDidMount() {
+    document.getElementById('entry-form').onkeypress = function(e) {
+      if (e.target.nodeName === 'TEXTAREA') {
+        return;
+      }
+      var key = e.charCode || e.keyCode || 0;
+      if (key == 13) {
+        e.preventDefault();
+      }
     };
-    this.setState({ editMode: true });
-  }
-
-  cancelEditMode() {
-    this.setState({
-      editMode: false,
-      title: this.originalData.title,
-      content: this.originalData.content
-    });
-  }
-
-  delete(id) {
-    entryActions.deleteEntry(id);
-  }
-
-  cancelDelete() {
-    this.setState({ modalConfirmDeleteVisible: false });
-  }
-
-  modalConfirmDelete() {
-    this.setState({ modalConfirmDeleteVisible: true });
-  }
-
-  save() {
-    fetch(CONSTANTS.appDomainURL, { method: '' });
   }
 
   render() {
-    const { heading, title, content, isNew, editMode, modalConfirmDeleteVisible } = this.state;
-    const { entry } = this.props;
+    const { heading, isNew } = this.state;
+    const {
+      entry: { title, content }
+    } = this.props;
     const authenticityToken = document.getElementsByTagName('meta')[1].getAttribute('content');
 
     let url = '/entries';
@@ -80,14 +40,14 @@ export default class EntryForm extends React.Component {
     return (
       <div className="row justify-content-center entry-form">
         <div className="col-6">
-          <ModalConfirmDeleteEntry
-            itemToDeleteID={entry.id}
-            visible={modalConfirmDeleteVisible}
-            onDelete={this.delete}
-            onCancelDelete={this.cancelDelete}
-          />
           <h2>{heading}</h2>
-          <form action={url} method="POST" acceptCharset="UTF-8">
+          <form
+            id="entry-form"
+            action={url}
+            method="POST"
+            acceptCharset="UTF-8"
+            onSubmit={this.props.onSubmit}
+          >
             {!isNew && <input name="_method" type="hidden" value="patch" />}
             <input name="utf8" type="hidden" value="✓" />
             <input type="hidden" name="authenticity_token" value={authenticityToken} />
@@ -99,8 +59,7 @@ export default class EntryForm extends React.Component {
                 name="entry[title]"
                 value={title}
                 data-type="title"
-                onChange={this.onChange}
-                disabled={!editMode}
+                onChange={this.props.onChange}
                 required
               />
             </div>
@@ -108,45 +67,30 @@ export default class EntryForm extends React.Component {
               <textarea
                 className="form-control"
                 data-type="content"
-                onChange={this.onChange}
+                onChange={this.props.onChange}
                 name="entry[content]"
                 value={content}
-                disabled={!editMode}
                 required
               />
             </div>
             <div className="btns">
-              {editMode && (
-                <button type="submit" className="btn btn-primary mr-3">
-                  Save
+              <button type="submit" className="btn btn-primary mr-3">
+                Save
+              </button>
+              {!isNew && (
+                <button
+                  type="button"
+                  className="btn btn-secondary mr-3"
+                  onClick={this.props.onCancelEditMode}
+                >
+                  Cancel
                 </button>
               )}
-              {!isNew &&
-                !editMode && (
-                  <button
-                    type="button"
-                    className="btn btn-success mr-3"
-                    onClick={this.enterEditMode}
-                  >
-                    Edit
-                  </button>
-                )}
-              {!isNew &&
-                editMode && (
-                  <button type="button" className="btn btn-info" onClick={this.cancelEditMode}>
-                    Cancel
-                  </button>
-                )}
-              {!isNew &&
-                !editMode && (
-                  <button
-                    type="button"
-                    className="btn btn-primary mr-3"
-                    onClick={this.modalConfirmDelete}
-                  >
-                    Delete
-                  </button>
-                )}
+              {!isNew && (
+                <button type="button" className="btn btn-danger mr-3" onClick={this.onClickDelete}>
+                  Delete
+                </button>
+              )}
             </div>
           </form>
         </div>

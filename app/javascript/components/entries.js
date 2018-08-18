@@ -2,34 +2,33 @@ import React from 'react';
 import Entry from './entry';
 import CONSTANTS from '../constants';
 import ModalConfirmDeleteEntry from './modals/modal-confirm-delete-entry';
-import entryActions from '../actions/entry';
+import EntryActions from '../actions/entry';
+import ErrorBoundary from './error-boundary';
 
 export default class Entries extends React.Component {
   constructor(props) {
     super(props);
     this.delete = this.delete.bind(this);
     this.cancelDelete = this.cancelDelete.bind(this);
-    this.modalConfirmDeleteEntry = this.modalConfirmDeleteEntry.bind(this);
-
     this.state = {
       modalConfirmDeleteVisible: false
     };
   }
 
   delete(id) {
-    entryActions.deleteEntry(id);
-  }
-
-  edit(id) {
-    window.location.href = CONSTANTS + '/entries/' + `${id}`;
+    EntryActions.deleteEntry(id);
   }
 
   cancelDelete() {
     this.setState({ modalConfirmDeleteVisible: false });
   }
 
-  modalConfirmDeleteEntry(id) {
+  onClickDelete(id) {
     this.setState({ modalConfirmDeleteVisible: true, itemToDeleteID: id });
+  }
+
+  onClickEdit(id) {
+    window.location.href = CONSTANTS.appDomainURL + '/entries/' + `${id}` + '/edit';
   }
 
   render() {
@@ -41,7 +40,16 @@ export default class Entries extends React.Component {
       entriesDOM = entries.map((entry, idx) => {
         return (
           <div key={entry.id}>
-            <Entry entry={entry} onDelete={this.modalConfirmDeleteEntry} />
+            <Entry
+              entry={entry}
+              type="index-page"
+              onClickDelete={() => {
+                this.onClickDelete(entry.id);
+              }}
+              onClickEdit={() => {
+                this.onClickEdit(entry.id);
+              }}
+            />
             {idx !== entries.length - 1 && <hr />}
           </div>
         );
@@ -49,18 +57,20 @@ export default class Entries extends React.Component {
     }
 
     return (
-      <div className="row justify-content-center">
-        <ModalConfirmDeleteEntry
-          onCancel={this.cancelDelete}
-          onDelete={this.delete}
-          itemToDeleteID={itemToDeleteID}
-          visible={modalConfirmDeleteVisible}
-        />
-        <div className="col-6">
-          <h2 className="text-center">Entries</h2>
-          {entriesDOM}
+      <ErrorBoundary>
+        <div className="row justify-content-center">
+          <ModalConfirmDeleteEntry
+            onCancel={this.cancelDelete}
+            onDelete={this.delete}
+            itemToDeleteID={itemToDeleteID}
+            visible={modalConfirmDeleteVisible}
+          />
+          <div className="col-6">
+            <h2 className="text-center">Entries</h2>
+            {entriesDOM}
+          </div>
         </div>
-      </div>
+      </ErrorBoundary>
     );
   }
 }

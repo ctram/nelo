@@ -1,24 +1,23 @@
 import React from 'react';
-import CONSTANTS from '../constants';
 import MarkupHelpers from './helpers/markup-helpers';
+
 
 export default class Entry extends React.Component {
   constructor(props) {
     super(props);
-    this.delete = this.delete.bind(this);
-    this.generateContentDOM = this.generateContentDOM.bind(this);
-  }
-
-  delete() {
-    this.props.onDelete(this.props.entry.id);
   }
 
   render() {
-    const { entry } = this.props;
+    const { entry, type } = this.props;
     const { title: entryTitle, content: entryContent } = entry;
+    let cssClass = 'entry d-flex ';
+    cssClass +=
+      type === 'show-page'
+        ? 'flex-column-reverse align-items-start entry--show-page'
+        : 'justify-content-between entry--index-page';
 
     return (
-      <div className="entry d-flex justify-content-between">
+      <div className={cssClass}>
         <div className="entry__details">
           <h3>{entryTitle}</h3>
           <div
@@ -26,14 +25,21 @@ export default class Entry extends React.Component {
             dangerouslySetInnerHTML={MarkupHelpers.createMarkup(entryContent)}
           />
         </div>
-        <div className="entry__actions">
-          <a
+        <div className={`entry__actions ${type === 'show-page' ? 'mb-3' : ''}`}>
+          <button
+            type="button"
             className="btn btn-outline-primary btn-small mr-3"
-            href={CONSTANTS.appDomainURL + '/entries/' + `${entry.id}`}
+            onClick={this.props.onClickEdit}
           >
             Edit
-          </a>
-          <button role="button" className="btn btn-outline-danger btn-small" onClick={this.delete}>
+          </button>
+          <button
+            role="button"
+            className="btn btn-outline-danger btn-small"
+            onClick={() => {
+              this.props.onClickDelete(this.props.entry.id);
+            }}
+          >
             Delete
           </button>
         </div>
@@ -41,3 +47,7 @@ export default class Entry extends React.Component {
     );
   }
 }
+
+Entry.defaultProps = {
+  type: 'show-page'
+};
