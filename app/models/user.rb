@@ -4,40 +4,43 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :entries, dependent: :destroy
+  has_many :entries, dependent: :destroy, foreign_key: 'author_id'
 
   def public_messages(type = nil)
-    messages = self.messages.where(privacy_level: 'public')
+    public_messages = messages.privacy_public
     
-    return messages if type.nil?
-
     if type == :author
-      messages.where(author_id: id.to_s)
+      return public_messages.where(author_id: id.to_s)
     elsif type == :recipient_id
-      messages.where(recipient_id: id.to_s)
+      return public_messages.where(recipient_id: id.to_s)
     end
-    []
+
+    public_messages
   end
 
   def private_messages(type = nil)
-    messages.where(privacy_level: 'private')
-    return messages if type.nil?
+    private_messages = messages.privacy_private
 
     if type == :author
-      messages.where(author_id: id.to_s)
+      return private_messages.where(author_id: id.to_s)
     elsif type == :recipient_id
-      messages.where(recipient_id: id.to_s)
+      return private_messages.where(recipient_id: id.to_s)
     end 
-    []
+    
+    private_messages
   end
 
+  private 
+
   def messages(type = nil)
-    return Message.where('author_id = ? OR recipient_id = ?', id.to_s, id.to_s) if type.nil?
+    messages = Message.where('author_id = ? OR recipient_id = ?', id.to_s, id.to_s) if type.nil?
 
     if type == :author 
-      Message.where('author_id = ?', id.to_s)
+      return messages.where('author_id = ?', id.to_s)
     elsif type == :recipient
-      Message.where('recipient_id = ?', id.to_s)
+      return message.where('recipient_id = ?', id.to_s)
     end
+
+    messages
   end
 end
