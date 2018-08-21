@@ -1,17 +1,7 @@
 class MessagesController < ApplicationController
   def index
-    type = params[:type]
-
-    case type
-    when 'recipient'
-      @messages = current_user.messages_as_recipient
-    when 'author'
-      @messages = current_user.messages_as_author
-    else
-      @messages = []
-    end
-
-    render json: @messages
+    user = User.find(params[:user_id])
+    render json: API::Entities::MessageEntity.represent(user.public_messages)
   end
 
   def new
@@ -19,7 +9,9 @@ class MessagesController < ApplicationController
   end
   
   def create
+    raise 'Author can only be the current user' if message_params[:author_id] != current_user.id
     @message = Message.create(message_params)
+    redirect_to entries_path
   end
 
   def update
