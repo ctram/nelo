@@ -5,7 +5,39 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :entries, dependent: :destroy
-  scope :messages_as_author,    ->(user = current_user) { where(author_id: user.id) }
-  scope :messages_as_recipient, ->(user = current_user) { where(recipient_id: user.id) }
-  scope :messages,              ->(user = current_user) { where('author_id = ? OR recipient_id = ?', user.id, user.id) }
+
+  def public_messages(type = nil)
+    messages = self.messages.where(privacy_level: 'public')
+    
+    return messages if type.nil?
+
+    if type == :author
+      messages.where(author_id: id.to_s)
+    elsif type == :recipient_id
+      messages.where(recipient_id: id.to_s)
+    end
+    []
+  end
+
+  def private_messages(type = nil)
+    messages.where(privacy_level: 'private')
+    return messages if type.nil?
+
+    if type == :author
+      messages.where(author_id: id.to_s)
+    elsif type == :recipient_id
+      messages.where(recipient_id: id.to_s)
+    end 
+    []
+  end
+
+  def messages(type = nil)
+    return Message.where('author_id = ? OR recipient_id = ?', id.to_s, id.to_s) if type.nil?
+
+    if type == :author 
+      Message.where('author_id = ?', id.to_s)
+    elsif type == :recipient
+      Message.where('recipient_id = ?', id.to_s)
+    end
+  end
 end
