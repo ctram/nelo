@@ -1,7 +1,6 @@
 import React from 'react';
 import MarkupHelpers from './helpers/markup-helpers';
 
-
 export default class Entry extends React.Component {
   constructor(props) {
     super(props);
@@ -19,7 +18,7 @@ export default class Entry extends React.Component {
     return (
       <div className={cssClass}>
         <div className="entry__details">
-          <h3>{entryTitle}</h3>
+          <h4>{entryTitle}</h4>
           <div
             className="entry__content"
             dangerouslySetInnerHTML={MarkupHelpers.createMarkup(entryContent)}
