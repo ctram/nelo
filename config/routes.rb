@@ -12,4 +12,5 @@ Rails.application.routes.draw do
 
   root 'home#index'
   get '/entries', to: 'entries#index'
+  get '/messages', to: 'messages#all_messages'
 end
