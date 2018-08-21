@@ -2,7 +2,7 @@ import React from 'react';
 import Entry from './entry';
 import CONSTANTS from '../constants';
 import ModalConfirmDeleteEntry from './modals/modal-confirm-delete-entry';
-import EntryActions from '../actions/entry';
+import EntryActions from '../actions/entry-actions';
 import ErrorBoundary from './error-boundary';
 import MessageForm from './message-form';
 import Message from './message';
@@ -52,13 +52,13 @@ export default class Entries extends React.Component {
   render() {
     let { entries, userID, currentUser } = this.props;
     const { modalConfirmDeleteVisible, itemToDeleteID, messages, message } = this.state;
-    let entriesDOM = <h3 className="text-center my-5">No entries, add some!</h3>;
+    let entriesDOM = <h4 className="text-center my-3">No entries, add some!</h4>;
     let messagesDOM = messages.map(message => {
       return <Message message={message} key={message.id} />;
     });
 
     if (messages.length === 0) {
-      messagesDOM = <h3 className="text-center">Waiting for some messages...</h3>;
+      messagesDOM = <h4 className="text-center my-3">Waiting for some messages...</h4>;
     }
 
     if (entries.length > 0) {
@@ -95,12 +95,18 @@ export default class Entries extends React.Component {
             <div className="entries__section">{entriesDOM}</div>
             <hr />
             <div className="messages__section">
-              <div className="messages__section-form">
-                <MessageForm message={message} userID={userID} currentUser={currentUser} />
+              {userID !== currentUser.id && (
+                <div>
+                  <div className="messages__section-form">
+                    <MessageForm message={message} userID={userID} currentUser={currentUser} />
+                  </div>
+                  <hr />
+                </div>
+              )}
+              <div className="messages__section-messages">
+                <h2 className="text-center">Messages</h2>
+                {messagesDOM}
               </div>
-              <hr />
-              <h2 className="text-center">Messages</h2>
-              <div className="messages__section-messages">{messagesDOM}</div>
             </div>
           </div>
         </div>
