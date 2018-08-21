@@ -5,10 +5,11 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   #   passwords: 'users/passwords'
   }
-  resources :entries
   resources :users, shallow: true do
+    resources :entries
     resources :messages
   end
-  
-  root 'entries#index'
+
+  root 'home#index'
+  get '/entries', to: 'entries#index'
 end
