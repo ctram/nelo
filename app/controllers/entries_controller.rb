@@ -1,6 +1,8 @@
 class EntriesController < ApplicationController
   def index
-    @entries = Entry.where(user_id: current_user.id).reverse_order
+    user = params[:id] ? User.find(user_id) : current_user
+    @entries = Entry.where(user_id: user.id).reverse_order
+    @user_id = user.id
   end
   
   def new
