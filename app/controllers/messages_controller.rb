@@ -1,7 +1,11 @@
 class MessagesController < ApplicationController
   def index
-    user = User.find(params[:user_id])
-    render json: API::Entities::MessageEntity.represent(user.public_messages)
+    if params[:user_id] 
+      user = User.find(params[:user_id])
+      return render json: API::Entities::MessageEntity.represent(user.public_messages(params[:type]))
+    end
+
+    render json: API::Entities::MessageEntity.represent(Message.privacy_public.reverse_order)
   end
 
   def new
@@ -11,6 +15,7 @@ class MessagesController < ApplicationController
   def create
     raise 'Author can only be the current user' if message_params[:author_id] != current_user.id
     @message = Message.create(message_params)
+    # redirect to origin url
     redirect_to entries_path
   end
 
