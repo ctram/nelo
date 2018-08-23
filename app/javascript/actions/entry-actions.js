@@ -11,12 +11,12 @@ function deleteEntry(id) {
   });
 }
 
-function fetchHomePageEntries() {
+function fetchFrontPageEntries() {
   const destinationURL = CONSTANTS.appDomainURL + '/entries';
   return fetch(destinationURL);
 }
 
 export default {
   deleteEntry,
-  fetchHomePageEntries
+  fetchFrontPageEntries
 };
