@@ -1,12 +1,21 @@
+require_relative '../entities/entry_entity'
+require_relative '../entities/user_entity'
+
 class EntriesController < ApplicationController
   def index
-    user = params[:id] ? User.find(user_id) : current_user
-    @entries = Entry.where(user_id: user.id).reverse_order
-    @user_id = user.id
+    user = User.find(params[:user_id])
+    if current_user == user
+      @entries = user.entries.reverse_order
+    else 
+      @entries = user.entries.privacy_public.reverse_order
+    end
+    
+    @entries = API::Entities::EntryEntity.represent(@entries).as_json
+    @user = API::Entities::UserEntity.represent(user).as_json
   end
   
   def new
-    @entry = Entry.new(user_id: current_user.id)
+    @entry = Entry.new(author_id: current_user.id)
   end
   
   def show
@@ -18,8 +27,8 @@ class EntriesController < ApplicationController
   end
 
   def create
-    current_user.entries.create(entry_params)
-    redirect_to entries_path
+    current_user.entries.create!(entry_params)
+    redirect_to user_entries_path
   end
 
   def update
@@ -35,7 +44,7 @@ class EntriesController < ApplicationController
   private
 
   def entry_params
-    params.require(:entry).permit(:content, :title)
+    params.require(:entry).permit(:content, :title, :privacy_level)
   end
   
 end
