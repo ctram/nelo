@@ -3,13 +3,18 @@ export default class EntryForm extends React.Component {
   constructor(props) {
     super(props);
     const { entry } = props;
-    const { id } = entry;
-    const isNew = !id;
+    const isNew = !entry.id;
+
+    entry.title = entry.title || '';
+    entry.content = entry.content || '';
 
     this.state = {
       isNew,
-      heading: isNew ? 'Edit Entry' : 'Create Entry'
+      heading: isNew ? 'Create Entry' : 'Edit Entry',
+      entry
     };
+
+    this.onChange = this.onChange.bind(this);
   }
 
   componentDidMount() {
@@ -24,18 +29,29 @@ export default class EntryForm extends React.Component {
     };
   }
 
+  onChange(e) {
+    if (this.props.onChange) {
+      return this.props.onChange(e);
+    }
+
+    const value = e.target.value;
+    const type = e.target.getAttribute('data-type');
+    let { entry } = this.state;
+    entry = Object.assign({}, entry);
+    entry[type] = value;
+    this.setState({ entry });
+  }
+
   render() {
-    const { heading, isNew } = this.state;
     const {
+      heading,
+      isNew,
       entry: { title, content }
-    } = this.props;
+    } = this.state;
+    const { currentUser } = this.props;
     const authenticityToken = document.getElementsByTagName('meta')[1].getAttribute('content');
 
-    let url = '/entries';
-
-    if (!isNew) {
-      url += `/${this.props.entry.id}`;
-    }
+    let url = `/users/${currentUser.id}/entries`;
 
     return (
       <div className="row justify-content-center entry-form">
@@ -59,7 +75,7 @@ export default class EntryForm extends React.Component {
                 name="entry[title]"
                 value={title}
                 data-type="title"
-                onChange={this.props.onChange}
+                onChange={this.onChange}
                 required
               />
             </div>
@@ -67,11 +83,23 @@ export default class EntryForm extends React.Component {
               <textarea
                 className="form-control"
                 data-type="content"
-                onChange={this.props.onChange}
+                onChange={this.onChange}
                 name="entry[content]"
                 value={content}
                 required
               />
+            </div>
+            <div className="form-group">
+              <label htmlFor="privacy-level-select">Privacy Level</label>
+              <select
+                className="form-control"
+                id="privacy-level-select"
+                name="entry[privacy_level]"
+              >
+                <option value="private">Private</option>
+                <option value="friends">Friends</option>
+                <option value="public">Public</option>
+              </select>
             </div>
             <div className="btns">
               <button type="submit" className="btn btn-primary mr-3">
@@ -102,3 +130,7 @@ export default class EntryForm extends React.Component {
     );
   }
 }
+
+EntryForm.defaultProps = {
+  entry: { title: '', content: '' }
+};
