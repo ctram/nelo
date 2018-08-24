@@ -5,6 +5,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :entries, dependent: :destroy, foreign_key: 'author_id'
+  has_and_belongs_to_many :friends,
+                          join_table: :user_friends,
+                          class_name: User,
+                          foreign_key: :user_id,
+                          association_foreign_key: :friend_id
 
   def public_messages(type = nil)
     public_messages = messages.privacy_public
@@ -28,6 +33,10 @@ class User < ApplicationRecord
     end 
     
     private_messages
+  end
+
+  def friend?(user)
+    friends.where(friend_id: user.id, status: 'confirmed')
   end
 
   private 
