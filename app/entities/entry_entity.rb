@@ -6,6 +6,7 @@ module API
       expose :content
       expose :updated_at
       expose :privacy_level
+      expose :author_id
     end
   end
 end
