@@ -4,5 +4,5 @@ class Entry < ApplicationRecord
   scope :privacy_private, -> { where(privacy_level: 'private') }
   scope :privacy_public, -> { where(privacy_level: 'public') }
   
-  belongs_to :author, class_name: User
+  belongs_to :author, class_name: User, foreign_key: 'author_id'
 end

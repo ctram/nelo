@@ -35,6 +35,10 @@ class User < ApplicationRecord
     private_messages
   end
 
+  def all_messages
+    messages
+  end
+
   def friend?(user)
     friends.where(friend_id: user.id, status: 'confirmed')
   end

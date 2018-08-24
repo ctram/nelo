@@ -54,10 +54,11 @@ export default class Entries extends React.Component {
     const { entries, currentUser } = this.props;
     const { modalConfirmDeleteEntryVisible, handleDelete } = this.state;
     let entriesDOM;
-    const isAuthor = currentUser.id === entry.author_id;
 
     if (entries.length > 0) {
       entriesDOM = entries.map(entry => {
+        const isAuthor = currentUser.id === entry.author_id;
+
         return (
           <Entry
             entry={entry}
@@ -80,7 +81,6 @@ export default class Entries extends React.Component {
           onClickCancel={this.onClickCancel}
         />
         {entriesDOM}
-        <button onClick={this.ajax}>Click for Ajax</button>
       </div>
     );
   }
