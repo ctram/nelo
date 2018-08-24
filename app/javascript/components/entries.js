@@ -51,13 +51,22 @@ export default class Entries extends React.Component {
   }
 
   render() {
-    const { entries } = this.props;
+    const { entries, currentUser } = this.props;
     const { modalConfirmDeleteEntryVisible, handleDelete } = this.state;
     let entriesDOM;
+    const isAuthor = currentUser.id === entry.author_id;
 
     if (entries.length > 0) {
       entriesDOM = entries.map(entry => {
-        return <Entry entry={entry} key={entry.id} onClickDelete={this.onClickDelete} />;
+        return (
+          <Entry
+            entry={entry}
+            key={entry.id}
+            onClickDelete={this.onClickDelete}
+            canEdit={isAuthor}
+            canDelete={isAuthor}
+          />
+        );
       });
     } else {
       entriesDOM = <h4 className="text-center my-3">No entries.</h4>;
