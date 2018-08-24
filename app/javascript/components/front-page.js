@@ -7,24 +7,8 @@ import MessageActions from '../actions/message-actions';
 export default class FrontPage extends React.Component {
   constructor(props) {
     super(props);
-
-    // this.state = {
-    //   messages: props.messages,
-    //   entries: props.entries
-    // };
   }
 
-  componentDidMount() {
-    EntryActions.fetchFrontPageEntries()
-      .then(entries => {
-        this.setState({ entries });
-        return MessageActions.fetchFrontPageMessages();
-      })
-      .then(messages => {
-        this.setState({ messages });
-      })
-      .catch(console.error);
-  }
 
   render() {
     const { entries, messages } = this.props;
