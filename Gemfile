@@ -61,3 +61,5 @@ gem 'mini_racer', platforms: :ruby
 gem "webpacker", "~> 3.5"
 
 gem "grape-entity", "~> 0.7.1"
+
+gem "cancancan", "~> 2.2"
