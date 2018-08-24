@@ -13,23 +13,27 @@ class MessagesController < ApplicationController
   end
   
   def create
-    raise 'Author can only be the current user' if message_params[:author_id] != current_user.id
-    @message = Message.create(message_params)
+    @message = Message.new(message_params)
+    can? :create, @message
+    @message.save
     # redirect to origin url
     redirect_to entries_path
   end
 
   def update
     @message = Message.find(params[:id])
+    can? :update, @message
     @message.update(message_params)
   end
 
   def show
     @message = Message.find(params[:id])
+    can? :read, @message
   end
 
   def destroy
     @message = Message.find(params[:id])
+    can? :destroy, @message
     @message.destroy
     # TODO: redirect to origin url
     redirect_to 'entries#index'

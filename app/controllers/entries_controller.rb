@@ -6,11 +6,14 @@ class EntriesController < ApplicationController
     user = User.find(params[:user_id])
     if current_user == user
       @entries = user.entries.reverse_order
+      @messages = user.messages.reverse_order
     else 
-      @entries = user.entries.privacy_public.reverse_order
+      @entries = Entry.privacy_public.reverse_order
+      @messages = Message.privacy_public.reverse_order
     end
     
     @entries = API::Entities::EntryEntity.represent(@entries).as_json
+    @messages = API::Entities::MessageEntity.represent(@messages).as_json
     @user = API::Entities::UserEntity.represent(user).as_json
   end
   
@@ -20,10 +23,12 @@ class EntriesController < ApplicationController
   
   def show
     @entry = Entry.find(params[:id])
+    can? :read, @entry
   end
 
   def edit
     @entry = Entry.find(params[:id])
+    can? :edit, @entry
   end
 
   def create
@@ -32,13 +37,16 @@ class EntriesController < ApplicationController
   end
 
   def update
-    @entry = Entry.find(params[:id])
-    @entry.update(entry_params)
+    entry = Entry.find(params[:id])
+    can? :update, @entry
+    entry.update(entry_params)
     redirect_to entries_path
   end
 
   def destroy
-    Entry.find(params[:id]).destroy
+    entry = Entry.find(params[:id])
+    can? :destroy, entry
+    entry.destroy
   end
 
   private
