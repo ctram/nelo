@@ -26,7 +26,7 @@ export default class Entry extends React.Component {
     if (badgeContent) {
       badgeDOM = (
         <div className="entry__badges">
-          <span className="badge badge-secondary">{badgeContent}</span>;
+          <span className="badge badge-secondary">{badgeContent}</span>
         </div>
       );
     }
