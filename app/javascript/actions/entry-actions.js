@@ -6,9 +6,7 @@ function deleteEntry(id) {
   const body = ActionHelpers.generateBody('DELETE');
   const request = ActionHelpers.newFormRequest(destinationURL, body);
 
-  return fetch(request).then(() => {
-    window.location.href = CONSTANTS.appDomainURL;
-  });
+  return fetch(request);
 }
 
 function fetchFrontPageEntries() {
