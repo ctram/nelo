@@ -1,0 +1,15 @@
+<ul class="flashes flashes--success">
+  <% flash[:success] && flash[:success].each do |msg|%>
+    <%= "<li>#{msg}</li>" %>
+  <% end %>
+</ul>
+<ul class="flashes flashes--notice">
+  <% flash[:notice] && flash[:notice].each do |msg|%>
+    <%= "<li>#{msg}</li>" %>
+  <% end %>
+</ul>
+<ul class="flashes flashes--alert">
+  <% flash[:alert] && flash[:alert].each do |msg|%>
+    <%= "<li>#{msg}</li>" %>
+  <% end %>
+</ul>
