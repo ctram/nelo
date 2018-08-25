@@ -63,3 +63,5 @@ gem "webpacker", "~> 3.5"
 gem "grape-entity", "~> 0.7.1"
 
 gem "cancancan", "~> 2.2"
+
+gem "will_paginate", "~> 3.1"
