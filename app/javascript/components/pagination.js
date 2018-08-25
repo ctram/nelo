@@ -27,6 +27,10 @@ export default class Pagination extends React.Component {
     let { numPages, baseURL, currentPage, startPage, endPage } = this.props;
     let pageItems = [];
 
+    if (numPages <= 1) {
+      return null;
+    }
+
     for (let i = startPage; i <= endPage; i++) {
       pageItems.push(<PageItem num={i} baseURL={baseURL} active={currentPage === i} key={i} />);
     }
@@ -45,7 +49,7 @@ export default class Pagination extends React.Component {
       <PageItem
         type="next"
         baseURL={baseURL}
-        disabled={currentPage === (startPage + numPages - 1)}
+        disabled={currentPage === startPage + numPages - 1}
         key="next"
         num={currentPage + 1}
       />
