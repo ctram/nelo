@@ -57,7 +57,7 @@ export default class Entries extends React.Component {
 
     if (entries.length > 0) {
       entriesDOM = entries.map(entry => {
-        const isAuthor = currentUser.id === entry.author_id;
+        const isAuthor = currentUser.id === entry.author.id;
 
         return (
           <Entry

@@ -1,3 +1,5 @@
+require_relative './user_entity'
+
 module API
   module Entities
     class EntryEntity < Grape::Entity
@@ -6,7 +8,7 @@ module API
       expose :content
       expose :updated_at
       expose :privacy_level
-      expose :author_id
+      expose :author, using: API::Entities::UserEntity
     end
   end
 end

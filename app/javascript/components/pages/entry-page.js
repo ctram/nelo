@@ -81,7 +81,7 @@ export default class EntryPage extends React.Component {
     const { editMode, entry, modalConfirmDeleteVisible } = this.state;
     const { currentUser, comments } = this.props;
     let entryDOM;
-    const isAuthor = currentUser.id === entry.author_id || currentUser.role === 'admin';
+    const isAuthor = currentUser.id === entry.author.id || currentUser.role === 'admin';
 
     if (editMode) {
       entryDOM = (
@@ -116,7 +116,7 @@ export default class EntryPage extends React.Component {
             />
             {entryDOM}
             <hr />
-            <CommentForm recipientID={entry.author_id} currentUser={currentUser} />
+            <CommentForm recipientID={entry.author.id} currentUser={currentUser} />
             <h4 className="my-3">Comments</h4>
             <Comments comments={comments} />
           </div>
