@@ -41,7 +41,8 @@ class EntriesController < ApplicationController
   def show
     @entry = Entry.find(params[:id])
     can? :read, @entry
-    @comments = @entry.comments
+    @comments = @entry.comments.viewable_by(current_user)
+    @comments = API::Entities::CommentEntity.represent(@comments).as_json
     @entry = API::Entities::EntryEntity.represent(@entry).as_json
   end
 

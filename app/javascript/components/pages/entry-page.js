@@ -155,7 +155,7 @@ export default class EntryPage extends React.Component {
       commentsDOM = (
         <div className="entry-page__comments">
           <hr />
-          <CommentForm recipientID={entry.author.id} currentUser={currentUser} />
+          <CommentForm recipientID={entry.author.id} currentUser={currentUser} entryID={entry.id} />
           <h4 className="text-center mt-5">Comments</h4>
           <Comments comments={comments} />
         </div>

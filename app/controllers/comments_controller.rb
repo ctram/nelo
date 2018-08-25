@@ -22,7 +22,7 @@ class CommentsController < ApplicationController
   def create
     @comment = Comment.new(message_params)
     can? :create, @comment
-    @comment.save
+    @comment.save!
     redirect_to entry_path(@comment.entry)
   end
   
@@ -54,6 +54,6 @@ class CommentsController < ApplicationController
   private 
 
   def message_params
-    params.require(:comment).permit(:content, :privacy_level, :author_id, :recipient_id)
+    params.require(:comment).permit(:content, :privacy_level, :author_id, :recipient_id, :entry_id)
   end
 end

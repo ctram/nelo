@@ -18,7 +18,7 @@ export default class CommentForm extends React.Component {
 
   render() {
     const { isNew, commentContent } = this.state;
-    const { comment, recipientID, currentUser } = this.props;
+    const { comment, recipientID, currentUser, entryID } = this.props;
     const action = isNew ? `/users/${currentUser.id}/comments` : `/comments/${comment.id}`;
     const method = isNew ? 'POST' : 'PATCH';
 
@@ -27,6 +27,7 @@ export default class CommentForm extends React.Component {
         <Form action={action} method={method} onSubmit={() => {}}>
           <input type="hidden" name="comment[recipient_id]" value={recipientID} />
           <input type="hidden" name="comment[author_id]" value={currentUser.id} />
+          <input type="hidden" name="comment[entry_id]" value={entryID} />
           <div className="form-group">
             <textarea
               name="comment[content]"
