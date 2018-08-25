@@ -65,81 +65,79 @@ export default class EntryForm extends React.Component {
     }
 
     return (
-      <div className="row justify-content-center entry-form">
-        <div className="col-6">
-          <h2>{heading}</h2>
-          <form
-            id="entry-form"
-            action={url}
-            method="POST"
-            acceptCharset="UTF-8"
-            onSubmit={this.props.onSubmit}
-          >
-            {!isNew && <input name="_method" type="hidden" value="patch" />}
-            <input name="utf8" type="hidden" value="✓" />
-            <input type="hidden" name="authenticity_token" value={authenticityToken} />
-            <div className="form-group">
-              <label htmlFor="title-input">Title</label>
-              <input
-                id="title-input"
-                className="form-control"
-                name="entry[title]"
-                value={title}
-                data-type="title"
-                onChange={this.onChange}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <textarea
-                className="form-control"
-                data-type="content"
-                onChange={this.onChange}
-                name="entry[content]"
-                value={content}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="privacy-level-select">Privacy Level</label>
-              <select
-                className="form-control"
-                id="privacy-level-select"
-                name="entry[privacy_level]"
-                value={privacy_level}
-                onChange={this.onChange}
-                data-type="privacy_level"
+      <div className="entry-form">
+        <h2>{heading}</h2>
+        <form
+          id="entry-form"
+          action={url}
+          method="POST"
+          acceptCharset="UTF-8"
+          onSubmit={this.props.onSubmit}
+        >
+          {!isNew && <input name="_method" type="hidden" value="patch" />}
+          <input name="utf8" type="hidden" value="✓" />
+          <input type="hidden" name="authenticity_token" value={authenticityToken} />
+          <div className="form-group">
+            <label htmlFor="title-input">Title</label>
+            <input
+              id="title-input"
+              className="form-control"
+              name="entry[title]"
+              value={title}
+              data-type="title"
+              onChange={this.onChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <textarea
+              className="form-control"
+              data-type="content"
+              onChange={this.onChange}
+              name="entry[content]"
+              value={content}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="privacy-level-select">Privacy Level</label>
+            <select
+              className="form-control"
+              id="privacy-level-select"
+              name="entry[privacy_level]"
+              value={privacy_level}
+              onChange={this.onChange}
+              data-type="privacy_level"
+            >
+              <option value="private">Private</option>
+              <option value="friends">Friends</option>
+              <option value="public">Public</option>
+            </select>
+          </div>
+          <div className="btns">
+            <button type="submit" className="btn btn-primary mr-3">
+              Save
+            </button>
+            {!isNew && (
+              <button
+                type="button"
+                className="btn btn-secondary mr-3"
+                onClick={this.props.onCancelEditMode}
               >
-                <option value="private">Private</option>
-                <option value="friends">Friends</option>
-                <option value="public">Public</option>
-              </select>
-            </div>
-            <div className="btns">
-              <button type="submit" className="btn btn-primary mr-3">
-                Save
+                Cancel
               </button>
-              {!isNew && (
-                <button
-                  type="button"
-                  className="btn btn-secondary mr-3"
-                  onClick={this.props.onCancelEditMode}
-                >
-                  Cancel
-                </button>
-              )}
-              {!isNew && (
-                <button
-                  type="button"
-                  className="btn btn-danger mr-3"
-                  onClick={this.props.onClickDelete}
-                >
-                  Delete
-                </button>
-              )}
-            </div>
-          </form>
-        </div>
+            )}
+            {!isNew && (
+              <button
+                type="button"
+                className="btn btn-danger mr-3"
+                onClick={this.props.onClickDelete}
+              >
+                Delete
+              </button>
+            )}
+          </div>
+        </form>
       </div>
     );
   }
