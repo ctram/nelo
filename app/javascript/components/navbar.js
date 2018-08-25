@@ -12,9 +12,9 @@ export default class Navbar extends React.Component {
     return (
       <ErrorBoundary>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <span className="navbar-brand" href="#">
+          <a className="navbar-brand" href="/">
             Nelo
-          </span>
+          </a>
           <button
             className="navbar-toggler"
             type="button"
