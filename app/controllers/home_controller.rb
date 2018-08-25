@@ -7,6 +7,7 @@ class HomeController < ApplicationController
   
   def index
     @current_entry_page = params[:page] ? params[:page].to_i : 1
+    @current_entry_page = @current_entry_page < 1 ? 1 : @current_entry_page
     
     if signed_in?
       found_entries = Entry.with_user_entries(current_user)
