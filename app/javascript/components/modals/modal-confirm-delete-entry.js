@@ -23,5 +23,11 @@ export default class ModalConfirmDeleteEntry extends React.Component {
 }
 
 Modal.defaultProps = {
-  details: {}
+  details: {},
+  onClickDelete: () => {
+    console.error('onClickDelete not defined');
+  },
+  onClickCancel: () => {
+    console.error('onClickCancel not defined');
+  }
 };

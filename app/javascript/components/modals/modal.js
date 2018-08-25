@@ -6,6 +6,11 @@ export default class Modal extends React.Component {
     this.state = { visible: false };
   }
 
+  componentDidMount() {
+    const { cssID } = this.props;
+    $('#' + cssID).modal({ backdrop: 'static', show: false });
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.visible !== this.props.visible) {
       this.setState({ visible: nextProps.visible });
@@ -32,9 +37,11 @@ export default class Modal extends React.Component {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">{title}</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+              {/*
+                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              */}
             </div>
             <div className="modal-body">{body}</div>
             <div className="modal-footer">{footer}</div>
