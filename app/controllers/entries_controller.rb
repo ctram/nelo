@@ -6,6 +6,8 @@ class EntriesController < ApplicationController
   
   def index
     user = User.find(params[:user_id])
+    entry_page_num = params[:entry_page_num] || 1
+    comment_page_num = params[:comment_page_num] || 1
 
     if current_user == user
       @entries = current_user.entries.reverse_order
@@ -17,7 +19,12 @@ class EntriesController < ApplicationController
       @entries = user.entries.privacy_public.reverse_order
       @comments = user.comments.privacy_public.reverse_order
     end
-    
+
+    @entries = @entries.paginate(page: entry_page_num)
+    @comments = @comments.paginate(page: comment_page_num)
+
+    @num_entry_pages = (@entries.length / 10) + 1
+    @num_comment_pages = (@comments.length / 10) + 1
     @entries = API::Entities::EntryEntity.represent(@entries).as_json
     @comments = API::Entities::CommentEntity.represent(@comments).as_json
     @user = API::Entities::UserEntity.represent(user).as_json
@@ -60,7 +67,7 @@ class EntriesController < ApplicationController
   private
 
   def entry_params
-    params.require(:entry).permit(:content, :title, :privacy_level)
+    params.require(:entry).permit(:content, :title, :privacy_level, :entry_page_num, :comment_page_num)
   end
   
 end

@@ -1,5 +1,5 @@
 require_relative '../entities/entry_entity'
-require_relative '../entities/message_entity'
+require_relative '../entities/comment_entity'
 
 class HomeController < ApplicationController
   skip_before_action :redirect_if_not_logged_in

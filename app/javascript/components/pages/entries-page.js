@@ -2,6 +2,7 @@ import React from 'react';
 import Entries from '../entries';
 import ErrorBoundary from '../error-boundary';
 import ProfileAside from '../profile-aside';
+import Pagination from './pagination';
 
 export default class EntriesPage extends React.Component {
   constructor(props) {
@@ -9,7 +10,15 @@ export default class EntriesPage extends React.Component {
   }
 
   render() {
-    const { entries, currentUser, user } = this.props;
+    const {
+      entries,
+      currentUser,
+      user,
+      numEntryPages,
+      currentEntriesPageNum,
+      entriesPageStartNum
+    } = this.props;
+    const baseURL = `/users/${user.id}/entries`;
 
     return (
       <ErrorBoundary>
@@ -20,6 +29,12 @@ export default class EntriesPage extends React.Component {
           <div className="entries-page__entries">
             <h1 className="mb-5">Entries</h1>
             <Entries entries={entries} currentUser={currentUser} user={user} />
+            <Pagination
+              numPages={numEntryPages}
+              baseURL={baseURL}
+              pageStartNum={entriesPageStartNum}
+              currentPageNum={currentEntriesPageNum}
+            />
           </div>
         </div>
       </ErrorBoundary>
@@ -30,5 +45,7 @@ export default class EntriesPage extends React.Component {
 EntriesPage.defaultProps = {
   entries: [],
   user: {},
-  currentUser: {}
+  currentUser: {},
+  numEntryPages: 1,
+  currentEntriesPageNum: 1
 };
