@@ -31,6 +31,7 @@ class EntriesController < ApplicationController
     @entry = Entry.find(params[:id])
     can? :read, @entry
     @comments = @entry.comments
+    @entry = API::Entities::EntryEntity.represent(@entry).as_json
   end
 
   def edit
