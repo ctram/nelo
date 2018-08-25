@@ -2,14 +2,20 @@ require_relative '../entities/entry_entity'
 require_relative '../entities/user_entity'
 
 class EntriesController < ApplicationController
+  skip_before_action :redirect_if_not_logged_in, except: [:index, :show]
+  
   def index
     user = User.find(params[:user_id])
+
     if current_user == user
-      @entries = user.entries.reverse_order
-      @messages = user.messages.reverse_order
-    else 
-      @entries = Entry.privacy_public.reverse_order
-      @messages = Message.privacy_public.reverse_order
+      @entries = current_user.entries.reverse_order
+      @messages = current_user.messages.reverse_order
+    elsif signed_in?
+      @entries = user.viewable_entries_for(current_user).reverse_order
+      @messages = user.viewable_messages_for(current_user).reverse_order
+    else
+      @entries = user.entries.privacy_public.reverse_order
+      @messages = user.messages.privacy_public.reverse_order
     end
     
     @entries = API::Entities::EntryEntity.represent(@entries).as_json

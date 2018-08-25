@@ -1,11 +1,18 @@
 class MessagesController < ApplicationController
+  skip_before_action :redirect_if_not_logged_in, except: [:index, :show]
+  
   def index
-    if params[:user_id] 
-      user = User.find(params[:user_id])
-      return render json: API::Entities::MessageEntity.represent(user.public_messages(params[:type]))
-    end
+    user = User.find(params[:user_id])
 
-    render json: API::Entities::MessageEntity.represent(Message.privacy_public.reverse_order)
+    if current_user == user
+      @messages = current_user.messages.reverse_order
+    elsif signed_in?
+      @messages = user.viewable_messages_for(current_user).reverse_order
+    else
+      @messages = user.messages.privacy_public.reverse_order
+    end
+    
+    @messages = API::Entities::MessageEntity.represent(@messages).as_json
   end
 
   def new
