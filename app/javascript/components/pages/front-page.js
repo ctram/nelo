@@ -1,5 +1,5 @@
 import React from 'react';
-import Messages from '../messages';
+import Comments from '../comments';
 import Entries from '../entries';
 import ErrorBoundary from '../error-boundary';
 
@@ -9,7 +9,7 @@ export default class FrontPage extends React.Component {
   }
 
   render() {
-    const { entries, messages } = this.props;
+    const { entries, comments } = this.props;
 
     return (
       <ErrorBoundary>
@@ -19,9 +19,9 @@ export default class FrontPage extends React.Component {
             <h2 className="mb-3 text-center">Latest Entries</h2>
             <Entries entries={entries} />
           </div>
-          <div className="latest-messages text-center">
-            <h2 className="mb-3">Latest Messages</h2>
-            <Messages messages={messages} />
+          <div className="latest-comments text-center">
+            <h2 className="mb-3">Latest Comments</h2>
+            <Comments comments={comments} />
           </div>
         </div>
       </ErrorBoundary>
@@ -31,5 +31,5 @@ export default class FrontPage extends React.Component {
 
 FrontPage.defaultProps = {
   entries: [],
-  messages: []
+  comments: []
 };

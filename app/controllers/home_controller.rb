@@ -7,13 +7,13 @@ class HomeController < ApplicationController
   def index
     if signed_in?
       @entries = Entry.with_user_entries(current_user).reverse_order
-      @messages = Message.with_user_messages(current_user).reverse_order
+      @comments = Comment.with_user_comments(current_user).reverse_order
     else
-      @entries = Entries.privacy_public.reverse_order
-      @messages = Messages.privacy_public.reverse_order
+      @entries = Entry.privacy_public.reverse_order
+      @comments = Comment.privacy_public.reverse_order
     end
     
     @entries = API::Entities::EntryEntity.represent(@entries).as_json
-    @messages = API::Entities::MessageEntity.represent(@messages).as_json
+    @comments = API::Entities::CommentEntity.represent(@comments).as_json
   end
 end

@@ -1,12 +1,12 @@
 import React from 'react';
 import Form from './form';
 
-export default class MessageForm extends React.Component {
+export default class CommentForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isNew: !props.message.id,
-      messageContent: props.message.content
+      isNew: !props.comment.id,
+      messageContent: props.comment.content
     };
     this.onChange = this.onChange.bind(this);
   }
@@ -18,21 +18,21 @@ export default class MessageForm extends React.Component {
 
   render() {
     const { isNew, messageContent } = this.state;
-    const { message, userID, currentUser } = this.props;
-    const action = isNew ? `/users/${currentUser.id}/messages` : `/messages/${message.id}`;
+    const { comment, userID, currentUser } = this.props;
+    const action = isNew ? `/users/${currentUser.id}/comments` : `/comments/${comment.id}`;
     const method = isNew ? 'POST' : 'PATCH';
 
     return (
-      <div className="message-form">
+      <div className="comment-form">
         <Form action={action} method={method} onSubmit={() => {}}>
-          <input type="hidden" name="message[recipient_id]" value={userID} />
-          <input type="hidden" name="message[author_id]" value={currentUser.id} />
+          <input type="hidden" name="comment[recipient_id]" value={userID} />
+          <input type="hidden" name="comment[author_id]" value={currentUser.id} />
           <div className="form-group">
             <textarea
-              name="message[content]"
+              name="comment[content]"
               value={messageContent}
               onChange={this.onChange}
-              placeholder="Leave a message"
+              placeholder="Leave a comment"
               required
             />
           </div>
@@ -41,7 +41,7 @@ export default class MessageForm extends React.Component {
             <select
               className="form-control"
               id="privacy-level-select"
-              name="message[privacy_level]"
+              name="comment[privacy_level]"
             >
               <option value="private">Private</option>
               {/*
@@ -57,6 +57,6 @@ export default class MessageForm extends React.Component {
   }
 }
 
-MessageForm.defaultProps = {
-  message: {}
+CommentForm.defaultProps = {
+  comment: {}
 };

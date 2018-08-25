@@ -9,17 +9,17 @@ class EntriesController < ApplicationController
 
     if current_user == user
       @entries = current_user.entries.reverse_order
-      @messages = current_user.messages.reverse_order
+      @comments = current_user.comments.reverse_order
     elsif signed_in?
       @entries = user.viewable_entries_for(current_user).reverse_order
-      @messages = user.viewable_messages_for(current_user).reverse_order
+      @comments = user.viewable_comments_for(current_user).reverse_order
     else
       @entries = user.entries.privacy_public.reverse_order
-      @messages = user.messages.privacy_public.reverse_order
+      @comments = user.comments.privacy_public.reverse_order
     end
     
     @entries = API::Entities::EntryEntity.represent(@entries).as_json
-    @messages = API::Entities::MessageEntity.represent(@messages).as_json
+    @comments = API::Entities::CommentEntity.represent(@comments).as_json
     @user = API::Entities::UserEntity.represent(user).as_json
   end
   
@@ -30,6 +30,7 @@ class EntriesController < ApplicationController
   def show
     @entry = Entry.find(params[:id])
     can? :read, @entry
+    @comments = @entry.author
   end
 
   def edit

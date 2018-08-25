@@ -37,11 +37,21 @@ export default class EntryPage extends React.Component {
   }
 
   onClickDelete() {
-    this.setState({ modalConfirmDeleteVisible: true });
+    this.setState({
+      modalConfirmDeleteVisible: true
+    });
   }
 
-  delete(id) {
-    EntryActions.deleteEntry(id);
+  delete() {
+    EntryActions.deleteEntry(this.state.entry.id)
+      .then(res => {
+        if (res.ok) {
+          toastr.success('Entry deleted.');
+          window.location.href =
+            CONSTANTS.appDomainURL + '/users/' + this.props.currentUser.id + '/entries';
+        }
+      })
+      .catch(console.error);
   }
 
   onClickEdit() {
@@ -67,7 +77,7 @@ export default class EntryPage extends React.Component {
 
   render() {
     const { editMode, entry, modalConfirmDeleteVisible } = this.state;
-    const { currentUser } = this.props;
+    const { currentUser, comments } = this.props;
     let entryDOM;
     const isAuthor = currentUser.id === entry.author_id || currentUser.role === 'admin';
 
@@ -96,17 +106,21 @@ export default class EntryPage extends React.Component {
     return (
       <ErrorBoundary>
         <ModalConfirmDeleteEntry
-          onCancel={this.cancelDelete}
-          onDelete={this.delete}
-          itemToDeleteID={entry.id}
+          onClickCancel={this.cancelDelete}
+          onClickDelete={this.delete}
           visible={modalConfirmDeleteVisible}
         />
         {entryDOM}
+        <hr />
+        <CommentForm />
+        <h4>Comments</h4>
+        <Comments comments={comments} />
       </ErrorBoundary>
     );
   }
 }
 
 EntryPage.defaultProps = {
-  editMode: false
+  editMode: false,
+  comments: []
 };

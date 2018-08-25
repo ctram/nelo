@@ -2,13 +2,13 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    can :read, Message do |msg|
+    can :read, Comment do |msg|
       (msg.author == user || msg.recipient == user || msg.author.friend?(user)) || msg.privacy_level == 'public'
     end
-    can [:create, :edit], Message do |msg|
+    can [:create, :edit], Comment do |msg|
       msg.author == user
     end
-    can :destroy, Message do |msg|
+    can :destroy, Comment do |msg|
       msg.author == user || msg.recipient == user
     end
     
@@ -18,7 +18,7 @@ class Ability
     end
 
     if user.admin?
-      can :manage, Message
+      can :manage, Comment
       can :manage, Entry
       can :manage, User
     end

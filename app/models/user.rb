@@ -11,32 +11,32 @@ class User < ApplicationRecord
                           foreign_key: :user_id,
                           association_foreign_key: :friend_id
 
-  def public_messages(type = nil)
-    public_messages = messages.privacy_public
+  def public_comments(type = nil)
+    public_comments = comments.privacy_public
     
     if type == :author
-      return public_messages.where(author_id: id.to_s)
+      return public_comments.where(author_id: id.to_s)
     elsif type == :recipient_id
-      return public_messages.where(recipient_id: id.to_s)
+      return public_comments.where(recipient_id: id.to_s)
     end
 
-    public_messages
+    public_comments
   end
 
-  def private_messages(type = nil)
-    private_messages = messages.privacy_private
+  def private_comments(type = nil)
+    private_comments = comments.privacy_private
 
     if type == :author
-      return private_messages.where(author_id: id.to_s)
+      return private_comments.where(author_id: id.to_s)
     elsif type == :recipient_id
-      return private_messages.where(recipient_id: id.to_s)
+      return private_comments.where(recipient_id: id.to_s)
     end 
     
-    private_messages
+    private_comments
   end
 
-  def all_messages
-    messages
+  def all_comments
+    comments
   end
 
   def friend?(user)
@@ -47,17 +47,15 @@ class User < ApplicationRecord
     role == 'admin'
   end
 
-  private 
-
-  def messages(type = nil)
-    messages = Message.where('author_id = ? OR recipient_id = ?', id.to_s, id.to_s) if type.nil?
+  def comments(type = nil)
+    comments = Comment.where('author_id = ? OR recipient_id = ?', id.to_s, id.to_s) if type.nil?
 
     if type == :author 
-      return messages.where('author_id = ?', id.to_s)
+      return comments.where('author_id = ?', id.to_s)
     elsif type == :recipient
-      return message.where('recipient_id = ?', id.to_s)
+      return comment.where('recipient_id = ?', id.to_s)
     end
 
-    messages
+    comments
   end
 end

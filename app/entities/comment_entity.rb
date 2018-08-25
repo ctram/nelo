@@ -1,6 +1,8 @@
+require_relative './user_entity'
+
 module API
   module Entities
-    class MessageEntity < Grape::Entity
+    class CommentEntity < Grape::Entity
       expose :id
       expose :author, using: API::Entities::UserEntity
       expose :recipient, using: API::Entities::UserEntity
