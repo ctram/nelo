@@ -55,7 +55,7 @@ class EntriesController < ApplicationController
     entry = Entry.find(params[:id])
     can? :update, @entry
     entry.update(entry_params)
-    redirect_to entries_path
+    redirect_to user_entries_path(entry.author)
   end
 
   def destroy
