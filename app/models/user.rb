@@ -43,6 +43,10 @@ class User < ApplicationRecord
     friends.where(friend_id: user.id, status: 'confirmed')
   end
 
+  def admin?
+    role == 'admin'
+  end
+
   private 
 
   def messages(type = nil)
