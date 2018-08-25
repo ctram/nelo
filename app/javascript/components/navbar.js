@@ -11,7 +11,7 @@ export default class Navbar extends React.Component {
 
     return (
       <ErrorBoundary>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
           <a className="navbar-brand" href="/">
             Nelo
           </a>
