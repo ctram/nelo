@@ -17,7 +17,7 @@
   </head>
   <body>
     <%= react_component("Navbar", props: { currentUser: current_user }, prerender: false) %>
-    <main>
+    <main class="main">
       <%= render partial: '/shared/flashes', locals: { flash: flash } %>
       <%= yield %>
     </main>
