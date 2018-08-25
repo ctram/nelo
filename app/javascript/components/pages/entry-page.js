@@ -128,22 +128,26 @@ export default class EntryPage extends React.Component {
     return (
       <ErrorBoundary>
         <div className="entry-page">
-          {!editMode && (
-            <div className="entry-page__profile-aside p-3 w-25">
-              <ProfileAside user={entry.author} />
+          <div className="row">
+            {!editMode && (
+              <div className="entry-page__profile-aside col-4">
+                <div className="position-fixed">
+                  <ProfileAside user={entry.author} />
+                </div>
+              </div>
+            )}
+            <div className="col-8">
+              <EntryPageMain
+                className={''}
+                modalConfirmDeleteVisible={modalConfirmDeleteVisible}
+                onClickCancel={this.onClickCancel}
+                onClickDelete={this.onClickDelete}
+                entryDOM={entryDOM}
+                entry={entry}
+                currentUser={currentUser}
+                comments={comments}
+              />
             </div>
-          )}
-          <div className="w-75 float-right">
-            <EntryPageMain
-              className={editMode && 'entry-page__content--float-right'}
-              modalConfirmDeleteVisible={modalConfirmDeleteVisible}
-              onClickCancel={this.onClickCancel}
-              onClickDelete={this.onClickDelete}
-              entryDOM={entryDOM}
-              entry={entry}
-              currentUser={currentUser}
-              comments={comments}
-            />
           </div>
           {!editMode && (
             <div>
