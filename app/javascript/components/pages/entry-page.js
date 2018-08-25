@@ -1,10 +1,10 @@
 import React from 'react';
-import EntryForm from './entry-form';
-import Entry from './entry';
-import EntryActions from '../actions/entry-actions';
-import ModalConfirmDeleteEntry from './modals/modal-confirm-delete-entry';
-import CONSTANTS from '../constants';
-import ErrorBoundary from './error-boundary';
+import EntryForm from '../entry-form';
+import Entry from '../entry';
+import EntryActions from '../../actions/entry-actions';
+import ModalConfirmDeleteEntry from '../modals/modal-confirm-delete-entry';
+import CONSTANTS from '../../constants';
+import ErrorBoundary from '../error-boundary';
 
 export default class EntryPage extends React.Component {
   constructor(props) {
