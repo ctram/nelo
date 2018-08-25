@@ -18,19 +18,24 @@ class CommentsController < ApplicationController
   def new
     @comment = Comment.new
   end
-  
+
   def create
     @comment = Comment.new(message_params)
     can? :create, @comment
     @comment.save
-    # redirect to origin url
-    redirect_to entries_path
+    redirect_to entry_path(@comment.entry)
+  end
+  
+  def edit
+    @comment = Comment.find(params[:id])
+    can? :edit, @comment
   end
 
   def update
     @comment = Comment.find(params[:id])
     can? :update, @comment
     @comment.update(message_params)
+    render :show
   end
 
   def show
@@ -40,10 +45,10 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment = Comment.find(params[:id])
+    entry = @comment.entry
     can? :destroy, @comment
     @comment.destroy
-    # TODO: redirect to origin url
-    redirect_to 'entries#index'
+    redirect_to entry_path(entry)
   end
 
   private 
