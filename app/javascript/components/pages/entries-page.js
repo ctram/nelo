@@ -2,7 +2,7 @@ import React from 'react';
 import Entries from '../entries';
 import ErrorBoundary from '../error-boundary';
 import ProfileAside from '../profile-aside';
-import Pagination from './pagination';
+import Pagination from '../pagination';
 
 export default class EntriesPage extends React.Component {
   constructor(props) {

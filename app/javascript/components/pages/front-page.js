@@ -2,6 +2,7 @@ import React from 'react';
 import Comments from '../comments';
 import Entries from '../entries';
 import ErrorBoundary from '../error-boundary';
+import Pagination from '../pagination';
 
 export default class FrontPage extends React.Component {
   constructor(props) {
@@ -9,7 +10,15 @@ export default class FrontPage extends React.Component {
   }
 
   render() {
-    const { entries, comments } = this.props;
+    const {
+      entries,
+      comments,
+      numEntryPages,
+      currentEntryPage,
+      entryStartPage,
+      entryEndPage
+    } = this.props;
+    const baseURL = `/?page=`;
 
     return (
       <ErrorBoundary>
@@ -18,6 +27,13 @@ export default class FrontPage extends React.Component {
           <div className="front-page__latest-entries">
             <h2 className="mb-3 text-center">Latest Entries</h2>
             <Entries entries={entries} />
+            <Pagination
+              numPages={numEntryPages}
+              baseURL={baseURL}
+              currentPage={currentEntryPage}
+              startPage={entryStartPage}
+              endPage={entryEndPage}
+            />
           </div>
           <div className="front-page__latest-comments">
             <h2 className="mb-3 text-center">Latest Comments</h2>
@@ -31,5 +47,6 @@ export default class FrontPage extends React.Component {
 
 FrontPage.defaultProps = {
   entries: [],
-  comments: []
+  comments: [],
+  numEntryPages: 1
 };

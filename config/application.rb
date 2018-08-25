@@ -1,4 +1,5 @@
 require_relative 'boot'
+require_relative './constants'
 
 require 'rails/all'
 
@@ -11,6 +12,6 @@ module Nelo
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-    WillPaginate.per_page = 10
+    WillPaginate.per_page = CONSTANTS::NUM_PER_PAGE
   end
 end

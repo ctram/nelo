@@ -6,7 +6,7 @@ class EntriesController < ApplicationController
   
   def index
     user = User.find(params[:user_id])
-    entry_page_num = params[:entry_page_num] || 1
+    current_entry_page = params[:current_entry_page] || 1
     comment_page_num = params[:comment_page_num] || 1
 
     if current_user == user
@@ -20,7 +20,7 @@ class EntriesController < ApplicationController
       @comments = user.comments.privacy_public.reverse_order
     end
 
-    @entries = @entries.paginate(page: entry_page_num)
+    @entries = @entries.paginate(page: current_entry_page)
     @comments = @comments.paginate(page: comment_page_num)
 
     @num_entry_pages = (@entries.length / 10) + 1
@@ -67,7 +67,7 @@ class EntriesController < ApplicationController
   private
 
   def entry_params
-    params.require(:entry).permit(:content, :title, :privacy_level, :entry_page_num, :comment_page_num)
+    params.require(:entry).permit(:content, :title, :privacy_level, :current_entry_page, :comment_page_num)
   end
   
 end
