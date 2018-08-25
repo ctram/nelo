@@ -11,6 +11,4 @@ Rails.application.routes.draw do
   end
 
   root 'home#index'
-  get '/entries', to: 'entries#index'
-  get '/messages', to: 'messages#index'
 end
