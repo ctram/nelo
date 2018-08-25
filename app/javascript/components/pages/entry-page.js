@@ -1,6 +1,8 @@
 import React from 'react';
 import EntryForm from '../entry-form';
 import Entry from '../entry';
+import CommentForm from '../comment-form';
+import Comments from '../comments';
 import EntryActions from '../../actions/entry-actions';
 import ModalConfirmDeleteEntry from '../modals/modal-confirm-delete-entry';
 import CONSTANTS from '../../constants';
@@ -105,16 +107,20 @@ export default class EntryPage extends React.Component {
 
     return (
       <ErrorBoundary>
-        <ModalConfirmDeleteEntry
-          onClickCancel={this.cancelDelete}
-          onClickDelete={this.delete}
-          visible={modalConfirmDeleteVisible}
-        />
-        {entryDOM}
-        <hr />
-        <CommentForm />
-        <h4>Comments</h4>
-        <Comments comments={comments} />
+        <div className="entry-page row justify-content-center">
+          <div className="col-6">
+            <ModalConfirmDeleteEntry
+              onClickCancel={this.cancelDelete}
+              onClickDelete={this.delete}
+              visible={modalConfirmDeleteVisible}
+            />
+            {entryDOM}
+            <hr />
+            <CommentForm recipientID={entry.author_id} currentUser={currentUser} />
+            <h4 className="my-3">Comments</h4>
+            <Comments comments={comments} />
+          </div>
+        </div>
       </ErrorBoundary>
     );
   }

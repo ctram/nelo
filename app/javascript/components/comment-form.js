@@ -6,31 +6,31 @@ export default class CommentForm extends React.Component {
     super(props);
     this.state = {
       isNew: !props.comment.id,
-      messageContent: props.comment.content
+      commentContent: props.comment.content
     };
     this.onChange = this.onChange.bind(this);
   }
 
   onChange(e) {
     const value = e.target.value;
-    this.setState({ messageContent: value });
+    this.setState({ commentContent: value });
   }
 
   render() {
-    const { isNew, messageContent } = this.state;
-    const { comment, userID, currentUser } = this.props;
+    const { isNew, commentContent } = this.state;
+    const { comment, recipientID, currentUser } = this.props;
     const action = isNew ? `/users/${currentUser.id}/comments` : `/comments/${comment.id}`;
     const method = isNew ? 'POST' : 'PATCH';
 
     return (
       <div className="comment-form">
         <Form action={action} method={method} onSubmit={() => {}}>
-          <input type="hidden" name="comment[recipient_id]" value={userID} />
+          <input type="hidden" name="comment[recipient_id]" value={recipientID} />
           <input type="hidden" name="comment[author_id]" value={currentUser.id} />
           <div className="form-group">
             <textarea
               name="comment[content]"
-              value={messageContent}
+              value={commentContent}
               onChange={this.onChange}
               placeholder="Leave a comment"
               required

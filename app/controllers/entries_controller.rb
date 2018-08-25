@@ -30,7 +30,7 @@ class EntriesController < ApplicationController
   def show
     @entry = Entry.find(params[:id])
     can? :read, @entry
-    @comments = @entry.author
+    @comments = @entry.comments
   end
 
   def edit

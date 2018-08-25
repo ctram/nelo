@@ -6,4 +6,5 @@ class Entry < ApplicationRecord
   scope :with_user_entries, ->(user) { where('privacy_level = ? OR author_id = ?', 'public', user.id) }
   
   belongs_to :author, class_name: User, foreign_key: 'author_id'
+  has_many :comments
 end
