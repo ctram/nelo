@@ -9,6 +9,23 @@ import CONSTANTS from '../../constants';
 import ErrorBoundary from '../error-boundary';
 import ProfileAside from '../profile-aside';
 
+function EntryPageMain(props) {
+  let { modalConfirmDeleteVisible, onClickCancel, onClickDelete, entryDOM, className } = props;
+
+  className = className ? className : '';
+
+  return (
+    <div className={'entry-page__content ' + className}>
+      <ModalConfirmDeleteEntry
+        onClickCancel={onClickCancel}
+        onClickDelete={onClickDelete}
+        visible={modalConfirmDeleteVisible}
+      />
+      {entryDOM}
+    </div>
+  );
+}
+
 export default class EntryPage extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +44,7 @@ export default class EntryPage extends React.Component {
   }
 
   onChange(e) {
-    const { value } = e.target;
+    let { value } = e.target;
     let { entry } = this.state;
     const type = e.target.getAttribute('data-type');
     entry = Object.assign({}, entry);
@@ -108,22 +125,34 @@ export default class EntryPage extends React.Component {
 
     return (
       <ErrorBoundary>
-        <div className="entry-page row justify-content-center">
-          <div className="entry-page__profile-aside col-4 p-3">
-            <ProfileAside user={entry.author} />
+        <div className="entry-page">
+          {!editMode && (
+            <div className="entry-page__profile-aside p-3">
+              <ProfileAside user={entry.author} />
+            </div>
+          )}
+          <div className="row justify-content-center">
+            <div className="col-6">
+              <EntryPageMain
+                className={editMode && 'entry-page__content--float-right'}
+                modalConfirmDeleteVisible={modalConfirmDeleteVisible}
+                onClickCancel={this.onClickCancel}
+                onClickDelete={this.onClickDelete}
+                entryDOM={entryDOM}
+                entry={entry}
+                currentUser={currentUser}
+                comments={comments}
+              />
+            </div>
           </div>
-          <div className="entry-page__main col-8">
-            <ModalConfirmDeleteEntry
-              onClickCancel={this.cancelDelete}
-              onClickDelete={this.delete}
-              visible={modalConfirmDeleteVisible}
-            />
-            {entryDOM}
-            <hr />
-            <CommentForm recipientID={entry.author.id} currentUser={currentUser} />
-            <h4 className="my-3">Comments</h4>
-            <Comments comments={comments} />
+          <hr />
+          <div className="row justify-content-center">
+            <div className="col-6">
+              <CommentForm recipientID={entry.author.id} currentUser={currentUser} />
+            </div>
           </div>
+          <h4 className="text-center">Comments</h4>
+          <Comments comments={comments} />
         </div>
       </ErrorBoundary>
     );
