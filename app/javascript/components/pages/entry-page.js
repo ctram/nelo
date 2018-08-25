@@ -123,36 +123,40 @@ export default class EntryPage extends React.Component {
       );
     }
 
+    let cssWidthClass = editMode;
+
     return (
       <ErrorBoundary>
         <div className="entry-page">
           {!editMode && (
-            <div className="entry-page__profile-aside p-3">
+            <div className="entry-page__profile-aside p-3 w-25">
               <ProfileAside user={entry.author} />
             </div>
           )}
-          <div className="row justify-content-center">
-            <div className="col-6">
-              <EntryPageMain
-                className={editMode && 'entry-page__content--float-right'}
-                modalConfirmDeleteVisible={modalConfirmDeleteVisible}
-                onClickCancel={this.onClickCancel}
-                onClickDelete={this.onClickDelete}
-                entryDOM={entryDOM}
-                entry={entry}
-                currentUser={currentUser}
-                comments={comments}
-              />
-            </div>
+          <div className="w-75 float-right">
+            <EntryPageMain
+              className={editMode && 'entry-page__content--float-right'}
+              modalConfirmDeleteVisible={modalConfirmDeleteVisible}
+              onClickCancel={this.onClickCancel}
+              onClickDelete={this.onClickDelete}
+              entryDOM={entryDOM}
+              entry={entry}
+              currentUser={currentUser}
+              comments={comments}
+            />
           </div>
-          <hr />
-          <div className="row justify-content-center">
-            <div className="col-6">
-              <CommentForm recipientID={entry.author.id} currentUser={currentUser} />
+          {!editMode && (
+            <div>
+              <hr />
+              <div className="row justify-content-center">
+                <div className="col-6">
+                  <CommentForm recipientID={entry.author.id} currentUser={currentUser} />
+                </div>
+              </div>
+              <h4 className="text-center">Comments</h4>
+              <Comments comments={comments} />
             </div>
-          </div>
-          <h4 className="text-center">Comments</h4>
-          <Comments comments={comments} />
+          )}
         </div>
       </ErrorBoundary>
     );
