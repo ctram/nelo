@@ -52,7 +52,7 @@ export default class Entry extends React.Component {
           {canEdit && (
             <button
               type="button"
-              className="btn btn-outline-primary btn-small mr-3"
+              className="btn btn-outline-primary btn-sm mr-3"
               onClick={this.props.onClickEdit}
             >
               Edit
@@ -61,7 +61,7 @@ export default class Entry extends React.Component {
           {canDelete && (
             <button
               role="button"
-              className="btn btn-outline-danger btn-small"
+              className="btn btn-outline-danger btn-sm"
               onClick={() => {
                 this.props.onClickDelete(this.props.entry.id);
               }}

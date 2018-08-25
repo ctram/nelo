@@ -10,7 +10,6 @@ export default class Entries extends React.Component {
     this.onClickDelete = this.onClickDelete.bind(this);
     this.onClickCancel = this.onClickCancel.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    this.ajax = this.ajax.bind(this);
 
     this.state = {
       modalConfirmDeleteEntryVisible: false
@@ -44,10 +43,6 @@ export default class Entries extends React.Component {
 
   onClickCancel() {
     this.setState({ modalConfirmDeleteEntryVisible: false });
-  }
-
-  ajax() {
-    fetch('http://localhost:3000/hey');
   }
 
   render() {
@@ -89,6 +84,5 @@ export default class Entries extends React.Component {
 
 Entries.defaultProps = {
   entries: [],
-  user: {},
   currentUser: {}
 };

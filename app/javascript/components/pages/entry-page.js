@@ -7,6 +7,7 @@ import EntryActions from '../../actions/entry-actions';
 import ModalConfirmDeleteEntry from '../modals/modal-confirm-delete-entry';
 import CONSTANTS from '../../constants';
 import ErrorBoundary from '../error-boundary';
+import ProfileAside from '../profile-aside';
 
 export default class EntryPage extends React.Component {
   constructor(props) {
@@ -108,7 +109,10 @@ export default class EntryPage extends React.Component {
     return (
       <ErrorBoundary>
         <div className="entry-page row justify-content-center">
-          <div className="col-6">
+          <div className="entry-page__profile-aside col-4 p-3">
+            <ProfileAside user={entry.author} />
+          </div>
+          <div className="entry-page__main col-8">
             <ModalConfirmDeleteEntry
               onClickCancel={this.cancelDelete}
               onClickDelete={this.delete}
