@@ -25,13 +25,9 @@ export default class Entry extends React.Component {
     }
 
     if (badgeContent) {
-      badgeDOM = (
-        <div className="entry__badges">
-          <span className="badge badge-secondary">{badgeContent}</span>
-        </div>
-      );
+      badgeDOM = <span className="badge badge-secondary ml-3">{badgeContent}</span>;
     }
-    let titleDOM = <h4>{entryTitle}</h4>;
+    let titleDOM = <h4 className="d-inline">{entryTitle}</h4>;
 
     if (entry.id && titleAsLink) {
       const entryURL = CONSTANTS.appDomainURL + '/entries/' + entry.id;
@@ -43,6 +39,9 @@ export default class Entry extends React.Component {
         <div className="entry__details">
           {titleDOM}
           {badgeDOM}
+          <div>
+            <a href={CONSTANTS.appDomainURL + '/users/' + entry.author.id}>{entry.author.email}</a>
+          </div>
           <div
             className="entry__content"
             dangerouslySetInnerHTML={MarkupHelpers.createMarkup(entryContent)}
@@ -50,13 +49,9 @@ export default class Entry extends React.Component {
         </div>
         <div className={`entry__actions ${type === 'show-page' ? 'mb-3' : ''}`}>
           {canEdit && (
-            <button
-              type="button"
-              className="btn btn-outline-primary btn-sm mr-3"
-              onClick={this.props.onClickEdit}
-            >
+            <a className="btn btn-outline-primary btn-sm mr-3" href={CONSTANTS.appDomainURL + `/entries/${entry.id}/edit`}>
               Edit
-            </button>
+            </a>
           )}
           {canDelete && (
             <button
