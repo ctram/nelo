@@ -18,7 +18,8 @@ module PaginationHelper
       num_pages: num_pages,
       start_page: start_page,
       end_page: end_page,
-      paginated_query: paginated_query
+      paginated_query: paginated_query,
+      page: page
     }
   end
 end

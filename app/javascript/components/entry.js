@@ -40,7 +40,7 @@ export default class Entry extends React.Component {
           {titleDOM}
           {badgeDOM}
           <div>
-            <a href={CONSTANTS.appDomainURL + '/users/' + entry.author.id}>{entry.author.email}</a>
+            <a href={CONSTANTS.appDomainURL + '/users/' + entry.author.id + '/entries'}>{entry.author.email}</a>
           </div>
           <div
             className="entry__content"

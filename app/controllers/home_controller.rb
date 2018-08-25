@@ -14,15 +14,11 @@ class HomeController < ApplicationController
       entries = Entry.privacy_public
       @comments = Comment.privacy_public
     end
-    
-    pagination_details = PaginationHelper.pagination_details(entries, params[:page])
-    
-    @entries = pagination_details[:paginated_query]
-    @num_entry_pages = pagination_details[:num_pages]
-    @entry_start_page = pagination_details[:start_page]
-    @entry_end_page = pagination_details[:end_page]
 
-    @entries = API::Entities::EntryEntity.represent(@entries).as_json
+    @comments = @comments.limit(10)
+    @pagination_details = PaginationHelper.pagination_details(entries, params[:page])
+
+    @entries = API::Entities::EntryEntity.represent(@pagination_details.delete(:paginated_query)).as_json
     @comments = API::Entities::CommentEntity.represent(@comments).as_json
   end
 end

@@ -2,7 +2,6 @@ import React from 'react';
 
 function PageItem(props) {
   let { baseURL, num, type, active, disabled } = props;
-  disabled = disabled || active;
   let content = num;
 
   if (type === 'prev') {
@@ -24,7 +23,7 @@ function PageItem(props) {
 
 export default class Pagination extends React.Component {
   render() {
-    let { numPages, baseURL, currentPage, startPage, endPage } = this.props;
+    let { numPages, baseURL, page, startPage, endPage } = this.props;
     let pageItems = [];
 
     if (numPages <= 1) {
@@ -32,16 +31,16 @@ export default class Pagination extends React.Component {
     }
 
     for (let i = startPage; i <= endPage; i++) {
-      pageItems.push(<PageItem num={i} baseURL={baseURL} active={currentPage === i} key={i} />);
+      pageItems.push(<PageItem num={i} baseURL={baseURL} active={page === i} key={i} />);
     }
 
     pageItems.unshift(
       <PageItem
         type="prev"
         baseURL={baseURL}
-        disabled={currentPage === 1}
+        disabled={page === 1}
         key="prev"
-        num={currentPage - 1}
+        num={page - 1}
       />
     );
 
@@ -49,9 +48,9 @@ export default class Pagination extends React.Component {
       <PageItem
         type="next"
         baseURL={baseURL}
-        disabled={currentPage === startPage + numPages - 1}
+        disabled={page === startPage + numPages - 1}
         key="next"
-        num={currentPage + 1}
+        num={page + 1}
       />
     );
 

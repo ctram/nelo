@@ -13,34 +13,31 @@ export default class FrontPage extends React.Component {
     const {
       entries,
       comments,
-      numEntryPages,
-      currentEntryPage,
-      entryStartPage,
-      entryEndPage,
-      currentUser
+      currentUser,
+      paginationDetails: { num_pages: numPages, start_page: startPage, end_page: endPage, page }
     } = this.props;
     const baseURL = `/?page=`;
 
     return (
       <ErrorBoundary>
         <div className="front-page p-3">
-          <h1 className="text-center">Front Page</h1>
-          <div className="front-page__latest-entries">
+          <h1 className="text-center mb-5">Front Page</h1>
+          <div className="front-page__latest-entries my-5">
             <Pagination
-              numPages={numEntryPages}
+              numPages={numPages}
               baseURL={baseURL}
-              currentPage={currentEntryPage}
-              startPage={entryStartPage}
-              endPage={entryEndPage}
+              page={page}
+              startPage={startPage}
+              endPage={endPage}
             />
             <h2 className="mb-3 text-center">Latest Entries</h2>
             <Entries entries={entries} currentUser={currentUser} />
             <Pagination
-              numPages={numEntryPages}
+              numPages={numPages}
               baseURL={baseURL}
-              currentPage={currentEntryPage}
-              startPage={entryStartPage}
-              endPage={entryEndPage}
+              page={page}
+              startPage={startPage}
+              endPage={endPage}
             />
           </div>
           <div className="front-page__latest-comments">

@@ -10,15 +10,15 @@ export default class EntriesPage extends React.Component {
   }
 
   render() {
+    const { entries, currentUser, user, paginationDetails } = this.props;
+    const baseURL = `/users/${user.id}/entries?entry_page=`;
+
     const {
-      entries,
-      currentUser,
-      user,
-      numEntryPages,
-      currentEntriesPageNum,
-      entriesPageStartNum
-    } = this.props;
-    const baseURL = `/users/${user.id}/entries`;
+      num_pages: numPages,
+      start_page: startPage,
+      end_page: endPage,
+      page
+    } = paginationDetails.entries_pagination;
 
     return (
       <ErrorBoundary>
@@ -30,10 +30,11 @@ export default class EntriesPage extends React.Component {
             <h1 className="mb-5">Entries</h1>
             <Entries entries={entries} currentUser={currentUser} user={user} />
             <Pagination
-              numPages={numEntryPages}
+              numPages={numPages}
+              page={page}
+              startPage={startPage}
+              endPage={endPage}
               baseURL={baseURL}
-              pageStartNum={entriesPageStartNum}
-              currentPageNum={currentEntriesPageNum}
             />
           </div>
         </div>

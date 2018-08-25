@@ -15,7 +15,7 @@ export default class Comments extends React.Component {
         return <Comment comment={comment} key={comment.id} />;
       });
     } else {
-      commentsDOM = <h4 className="text-center">No comments.</h4>;
+      commentsDOM = <h5 className="text-center">No comments.</h5>;
     }
 
     return <div className="comments">{commentsDOM}</div>;

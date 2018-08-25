@@ -99,7 +99,14 @@ export default class EntryPage extends React.Component {
     const { editMode, entry, modalConfirmDeleteVisible } = this.state;
     const { currentUser, comments } = this.props;
     let entryDOM;
-    const isAuthor = currentUser.id === entry.author.id || currentUser.role === 'admin';
+    let dom;
+    let isAuthor = null;
+    let commentsDOM;
+    let profileAsideDOM;
+
+    if (entry.id) {
+      isAuthor = currentUser.id === entry.author.id || currentUser.role === 'admin';
+    }
 
     if (editMode) {
       entryDOM = (
@@ -123,45 +130,55 @@ export default class EntryPage extends React.Component {
       );
     }
 
-    let cssWidthClass = editMode;
+    let entryPageMainDOM = (
+      <div className="entry-page__main">
+        <EntryPageMain
+          className={''}
+          modalConfirmDeleteVisible={modalConfirmDeleteVisible}
+          onClickCancel={this.onClickCancel}
+          onClickDelete={this.onClickDelete}
+          entryDOM={entryDOM}
+          entry={entry}
+          currentUser={currentUser}
+          comments={comments}
+        />
+      </div>
+    );
+
+    if (editMode) {
+      dom = (
+        <div className="row justify-content-center">
+          <div className="col-6">{entryPageMainDOM}</div>
+        </div>
+      );
+    } else {
+      commentsDOM = (
+        <div className="entry-page__comments">
+          <hr />
+          <CommentForm recipientID={entry.author.id} currentUser={currentUser} />
+          <h4 className="text-center mt-5">Comments</h4>
+          <Comments comments={comments} />
+        </div>
+      );
+      profileAsideDOM = (
+        <div className="position-fixed entry-page__profile-aside">
+          <ProfileAside user={entry.author} />
+        </div>
+      );
+      dom = (
+        <div className="row">
+          <div className="col-3">{profileAsideDOM}</div>
+          <div className="col-9">
+            {entryPageMainDOM}
+            {commentsDOM}
+          </div>
+        </div>
+      );
+    }
 
     return (
       <ErrorBoundary>
-        <div className="entry-page">
-          <div className="row">
-            {!editMode && (
-              <div className="entry-page__profile-aside col-4">
-                <div className="position-fixed">
-                  <ProfileAside user={entry.author} />
-                </div>
-              </div>
-            )}
-            <div className="col-8">
-              <EntryPageMain
-                className={''}
-                modalConfirmDeleteVisible={modalConfirmDeleteVisible}
-                onClickCancel={this.onClickCancel}
-                onClickDelete={this.onClickDelete}
-                entryDOM={entryDOM}
-                entry={entry}
-                currentUser={currentUser}
-                comments={comments}
-              />
-            </div>
-          </div>
-          {!editMode && (
-            <div>
-              <hr />
-              <div className="row justify-content-center">
-                <div className="col-6">
-                  <CommentForm recipientID={entry.author.id} currentUser={currentUser} />
-                </div>
-              </div>
-              <h4 className="text-center">Comments</h4>
-              <Comments comments={comments} />
-            </div>
-          )}
-        </div>
+        <div className="entry-page px-5">{dom}</div>
       </ErrorBoundary>
     );
   }

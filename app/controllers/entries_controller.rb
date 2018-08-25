@@ -1,32 +1,36 @@
 require_relative '../entities/entry_entity'
 require_relative '../entities/user_entity'
+require_relative '../entities/comment_entity'
+require_relative '../helpers/pagination_helper'
 
 class EntriesController < ApplicationController
   skip_before_action :redirect_if_not_logged_in, except: [:index, :show]
   
   def index
     user = User.find(params[:user_id])
-    current_entry_page = params[:current_entry_page] || 1
-    comment_page_num = params[:comment_page_num] || 1
-
+    
     if current_user == user
-      @entries = current_user.entries.reverse_order
-      @comments = current_user.comments.reverse_order
+      entries = current_user.entries.reverse_order
+      comments = current_user.comments.reverse_order
     elsif signed_in?
-      @entries = user.viewable_entries_for(current_user).reverse_order
-      @comments = user.viewable_comments_for(current_user).reverse_order
+      entries = user.viewable_entries_for(current_user).reverse_order
+      comments = user.viewable_comments_for(current_user).reverse_order
     else
-      @entries = user.entries.privacy_public.reverse_order
-      @comments = user.comments.privacy_public.reverse_order
+      entries = user.entries.privacy_public.reverse_order
+      comments = user.comments.privacy_public.reverse_order
     end
+    
+    entries_pagination = PaginationHelper.pagination_details(entries, params[:entry_page])
+    comments_pagination = PaginationHelper.pagination_details(comments, params[:comment_page])
 
-    @entries = @entries.paginate(page: current_entry_page)
-    @comments = @comments.paginate(page: comment_page_num)
-
-    @num_entry_pages = (@entries.length / 10) + 1
-    @num_comment_pages = (@comments.length / 10) + 1
-    @entries = API::Entities::EntryEntity.represent(@entries).as_json
-    @comments = API::Entities::CommentEntity.represent(@comments).as_json
+    @entries = API::Entities::EntryEntity.represent(entries_pagination.delete(:paginated_query)).as_json
+    
+    @comments = API::Entities::CommentEntity.represent(comments_pagination.delete(:paginated_query)).as_json
+    
+    @pagination_details = {
+      entries_pagination: entries_pagination, comments_pagination: comments_pagination
+    }
+    
     @user = API::Entities::UserEntity.represent(user).as_json
   end
   
@@ -67,7 +71,7 @@ class EntriesController < ApplicationController
   private
 
   def entry_params
-    params.require(:entry).permit(:content, :title, :privacy_level, :current_entry_page, :comment_page_num)
+    params.require(:entry).permit(:content, :title, :privacy_level, :entry_page, :comment_page)
   end
   
 end
