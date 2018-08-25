@@ -42,7 +42,7 @@ class EntriesController < ApplicationController
   end
 
   def edit
-    @entry = Entry.find(params[:id])
+    @entry = API::Entities::EntryEntity.represent(Entry.find(params[:id])).as_json
     can? :edit, @entry
   end
 
