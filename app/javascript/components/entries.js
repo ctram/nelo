@@ -66,6 +66,7 @@ export default class Entries extends React.Component {
             onClickDelete={this.onClickDelete}
             canEdit={isAuthor}
             canDelete={isAuthor}
+            titleAsLink={true}
           />
         );
       });

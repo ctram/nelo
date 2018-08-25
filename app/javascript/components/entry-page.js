@@ -67,7 +67,9 @@ export default class EntryPage extends React.Component {
 
   render() {
     const { editMode, entry, modalConfirmDeleteVisible } = this.state;
+    const { currentUser } = this.props;
     let entryDOM;
+    const isAuthor = currentUser.id === entry.author_id || currentUser.role === 'admin';
 
     if (editMode) {
       entryDOM = (
@@ -76,11 +78,18 @@ export default class EntryPage extends React.Component {
           onChange={this.onChange}
           onCancelEditMode={this.onCancelEditMode}
           onClickDelete={this.onClickDelete}
+          currentUser={currentUser}
         />
       );
     } else {
       entryDOM = (
-        <Entry entry={entry} onClickEdit={this.onClickEdit} onClickDelete={this.onClickDelete} />
+        <Entry
+          entry={entry}
+          onClickEdit={this.onClickEdit}
+          onClickDelete={this.onClickDelete}
+          canEdit={isAuthor}
+          canDelete={isAuthor}
+        />
       );
     }
 

@@ -29,6 +29,12 @@ export default class EntryForm extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      entry: nextProps.entry
+    });
+  }
+
   onChange(e) {
     if (this.props.onChange) {
       return this.props.onChange(e);
@@ -46,12 +52,17 @@ export default class EntryForm extends React.Component {
     const {
       heading,
       isNew,
-      entry: { title, content }
+      entry: { title, content, privacy_level, id }
     } = this.state;
     const { currentUser } = this.props;
     const authenticityToken = document.getElementsByTagName('meta')[1].getAttribute('content');
+    let url;
 
-    let url = `/users/${currentUser.id}/entries`;
+    if (isNew) {
+      url = `/users/${currentUser.id}/entries`;
+    } else {
+      url = `/entries/${id}`;
+    }
 
     return (
       <div className="row justify-content-center entry-form">
@@ -95,6 +106,9 @@ export default class EntryForm extends React.Component {
                 className="form-control"
                 id="privacy-level-select"
                 name="entry[privacy_level]"
+                value={privacy_level}
+                onChange={this.onChange}
+                data-type="privacy_level"
               >
                 <option value="private">Private</option>
                 <option value="friends">Friends</option>
@@ -132,5 +146,6 @@ export default class EntryForm extends React.Component {
 }
 
 EntryForm.defaultProps = {
-  entry: { title: '', content: '' }
+  entry: { title: '', content: '', privacy_level: 'private' },
+  currentUser: {}
 };

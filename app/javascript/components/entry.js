@@ -1,5 +1,6 @@
 import React from 'react';
 import MarkupHelpers from './helpers/markup-helpers';
+import CONSTANTS from '../constants';
 
 export default class Entry extends React.Component {
   constructor(props) {
@@ -7,7 +8,7 @@ export default class Entry extends React.Component {
   }
 
   render() {
-    const { entry, type, canEdit, canDelete } = this.props;
+    const { entry, type, canEdit, canDelete, titleAsLink } = this.props;
     const { title: entryTitle, content: entryContent } = entry;
     let cssClass = 'entry d-flex ';
     let badgeDOM = null;
@@ -30,11 +31,17 @@ export default class Entry extends React.Component {
         </div>
       );
     }
+    let titleDOM = <h4>{entryTitle}</h4>;
+
+    if (entry.id && titleAsLink) {
+      const entryURL = CONSTANTS.appDomainURL + '/entries/' + entry.id;
+      titleDOM = <a href={entryURL}>{titleDOM}</a>;
+    }
 
     return (
       <div className={cssClass}>
         <div className="entry__details">
-          <h4>{entryTitle}</h4>
+          {titleDOM}
           {badgeDOM}
           <div
             className="entry__content"
@@ -72,5 +79,6 @@ Entry.defaultProps = {
   type: 'show-page',
   canEdit: false,
   canDelete: false,
-  entry: {}
+  entry: {},
+  titleAsLink: false
 };
