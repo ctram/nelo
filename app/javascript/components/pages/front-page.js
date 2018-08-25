@@ -16,7 +16,8 @@ export default class FrontPage extends React.Component {
       numEntryPages,
       currentEntryPage,
       entryStartPage,
-      entryEndPage
+      entryEndPage,
+      currentUser
     } = this.props;
     const baseURL = `/?page=`;
 
@@ -25,8 +26,15 @@ export default class FrontPage extends React.Component {
         <div className="front-page p-3">
           <h1 className="text-center">Front Page</h1>
           <div className="front-page__latest-entries">
+            <Pagination
+              numPages={numEntryPages}
+              baseURL={baseURL}
+              currentPage={currentEntryPage}
+              startPage={entryStartPage}
+              endPage={entryEndPage}
+            />
             <h2 className="mb-3 text-center">Latest Entries</h2>
-            <Entries entries={entries} />
+            <Entries entries={entries} currentUser={currentUser} />
             <Pagination
               numPages={numEntryPages}
               baseURL={baseURL}
