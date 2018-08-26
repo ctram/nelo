@@ -1,5 +1,4 @@
 import React from 'react';
-import MarkupHelpers from './helpers/markup-helpers';
 import Form from './form';
 
 export default class ProfileForm extends React.Component {
@@ -9,22 +8,32 @@ export default class ProfileForm extends React.Component {
     const { user } = props;
     this.state = {
       about: user.about,
-      spiritAnimal: user.spirit_animal
+      spiritAnimal: user.spirit_animal,
+      username: user.username
     };
     this.originalContent = {
       about: user.about,
-      spiritAnimal: user.spirit_animal
+      spiritAnimal: user.spirit_animal,
+      username: user.username
     };
     this.onChange = this.onChange.bind(this);
     this.onClickCancel = this.onClickCancel.bind(this);
   }
 
   onClickCancel() {
-    const { about, spiritAnimal } = this.state;
-    const { about: originalAbout, spiritAnimal: originalSpiritAnimal } = this.originalContent;
+    const { about, spiritAnimal, username } = this.state;
+    const {
+      about: originalAbout,
+      spiritAnimal: originalSpiritAnimal,
+      username: originalUsername
+    } = this.originalContent;
     let result = false;
 
-    if (about !== originalAbout || spiritAnimal !== originalSpiritAnimal) {
+    if (
+      about !== originalAbout ||
+      spiritAnimal !== originalSpiritAnimal ||
+      username !== originalUsername
+    ) {
       result = window.confirm('Are you sure you want to leave without saving?');
     }
 
@@ -44,12 +53,23 @@ export default class ProfileForm extends React.Component {
   }
 
   render() {
-    const { about, spiritAnimal } = this.state;
+    const { about, spiritAnimal, username } = this.state;
     const { user } = this.props;
     const action = '/users/' + user.id;
 
     return (
       <Form method="PATCH" action={action} formID="profile-form">
+        <div className="form-group">
+          <label htmlFor="username">Username</label>
+          <input
+            id="username"
+            value={username}
+            name="user[username]"
+            data-type="username"
+            className="form-control"
+            onChange={this.onChange}
+          />
+        </div>
         <div className="form-group">
           <label htmlFor="about">About</label>
           <textarea

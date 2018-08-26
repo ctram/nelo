@@ -1,6 +1,7 @@
 function sanitizeContent(content) {
   if (!content) {
-    throw 'Attempted to sanitize null or undefined from markup helper';
+    console.warn('Attempted to sanitize null or undefined content from MarkupHelper');
+    return '';
   }
 
   return content

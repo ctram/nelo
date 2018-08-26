@@ -144,6 +144,5 @@ export default class EntryForm extends React.Component {
 }
 
 EntryForm.defaultProps = {
-  entry: { title: '', content: '', privacy_level: 'private' },
-  currentUser: {}
+  entry: { title: '', content: '', privacy_level: 'private' }
 };

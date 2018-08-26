@@ -2,7 +2,7 @@ require_relative '../entities/user_entity'
 require_relative '../helpers/pagination_helper'
 
 class UsersController < ApplicationController
-  skip_before_action :redirect_if_not_logged_in, except: [:index, :show]
+  skip_before_action :redirect_if_not_logged_in, only: [:index, :show]
 
   def index
     page = params[:page]
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :about, :spirit_animal)
+    params.require(:user).permit(:email, :about, :spirit_animal, :username)
   end
   
 end

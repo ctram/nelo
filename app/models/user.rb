@@ -11,6 +11,8 @@ class User < ApplicationRecord
                           foreign_key: :user_id,
                           association_foreign_key: :friend_id
 
+  validates_presence_of :username, :email
+
   def public_comments(type = nil)
     public_comments = comments.privacy_public
     

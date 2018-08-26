@@ -1,5 +1,5 @@
 import React from 'react';
-import MarkupHelpers from './helpers/markup-helpers';
+import MarkupHelper from '../helpers/markup-helper';
 import EntryActions from '../actions/entry-actions';
 import CONSTANTS from '../constants';
 
@@ -67,12 +67,12 @@ export default class Entry extends React.Component {
           {badgeDOM}
           <div>
             <a href={CONSTANTS.APP_DOMAIN_URL + '/users/' + entry.author.id + '/entries'}>
-              {entry.author.email}
+              {entry.author.username}
             </a>
           </div>
           <div
             className="entry__content"
-            dangerouslySetInnerHTML={MarkupHelpers.createHTML(entryContent)}
+            dangerouslySetInnerHTML={MarkupHelper.createHTML(entryContent)}
           />
         </div>
         <div className={`entry__actions ${type === 'show-page' ? 'mb-3' : ''}`}>

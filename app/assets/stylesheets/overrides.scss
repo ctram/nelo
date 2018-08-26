@@ -1,8 +1,21 @@
 textarea {
   width: 100%;
+  min-height: 10em;
 }
 
 main.main {
   padding-top: 6em;
   padding-bottom: 6em;
+}
+
+// Devise error messages
+#error_explanation {
+  h2 {
+    font-size: 1em;
+    color: red;
+  }
+
+  li {
+    color: red;
+  }
 }

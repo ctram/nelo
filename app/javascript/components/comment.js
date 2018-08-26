@@ -1,5 +1,5 @@
 import React from 'react';
-import MarkupHelpers from './helpers/markup-helpers';
+import MarkupHelper from '../helpers/markup-helper';
 import CONSTANTS from '../constants';
 import CommentActions from '../actions/comment-actions';
 
@@ -34,6 +34,14 @@ export default class Comment extends React.Component {
 
   render() {
     const { comment, currentUser, bylineType } = this.props;
+    let isAuthor = false;
+    let isRecipient = false;
+
+    if (currentUser) {
+      isAuthor = currentUser.id === comment.author.id;
+      isRecipient = currentUser.id === comment.recipient.id;
+    }
+
     let bylineDOM;
 
     switch (bylineType) {
@@ -43,14 +51,14 @@ export default class Comment extends React.Component {
       case 'says':
         bylineDOM = (
           <div className="d-inline">
-            <strong>{comment.author.email}</strong> says:
+            <strong>{comment.author.username}</strong> says:
           </div>
         );
         break;
       default:
         bylineDOM = (
           <div className="d-inline">
-            <strong>{comment.author.email}</strong> commented on{' '}
+            <strong>{comment.author.username}</strong> commented on{' '}
             <a href={'/entries/' + comment.entry.id}>{comment.entry.title}</a>
           </div>
         );
@@ -60,16 +68,16 @@ export default class Comment extends React.Component {
       <div className="comment p-3 py-5">
         {comment.id && (
           <div className="comment__actions mb-3">
-            {comment.author.id === currentUser.id && (
+            {isAuthor && (
               <a
                 href={'/comments/' + comment.id + '/edit'}
-                className="btn btn-outline-primary btn-sm"
+                className="btn btn-outline-primary btn-sm mr-3"
               >
                 Edit
               </a>
             )}
-            {(comment.author.id === currentUser.id || comment.recipient.id === currentUser.id) && (
-              <button className="ml-3 btn btn-outline-danger btn-sm" onClick={this.onClickDelete}>
+            {(isAuthor || isRecipient) && (
+              <button className="btn btn-outline-danger btn-sm" onClick={this.onClickDelete}>
                 Delete
               </button>
             )}
@@ -83,8 +91,8 @@ export default class Comment extends React.Component {
           {bylineDOM}
         </div>
         <div
-          className="comment__content my-3 ml-3 p-3"
-          dangerouslySetInnerHTML={MarkupHelpers.createHTML(comment.content)}
+          className="comment__content my-3 ml-3 p-3 card"
+          dangerouslySetInnerHTML={MarkupHelper.createHTML(comment.content)}
         />
       </div>
     );
@@ -93,6 +101,6 @@ export default class Comment extends React.Component {
 
 Comment.defaultProps = {
   comment: {},
-  currentUser: {},
+
   bylineType: 'with entry link'
 };

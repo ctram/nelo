@@ -1,0 +1,21 @@
+.flash {
+  text-align: center;
+  font-weight: 600;
+  padding: 0.5em;
+  border-radius: 5px;
+  width: 40%;
+  margin: auto;
+  color: white;
+}
+
+.flash--success {
+  background: green;
+}
+
+.flash--alert {
+  background: red;
+}
+
+.flash--notice {
+  background: blue;
+}

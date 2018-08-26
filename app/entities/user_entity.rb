@@ -7,6 +7,7 @@ module API
       expose :profile_image_url
       expose :about
       expose :spirit_animal
+      expose :username
     end
   end
 end

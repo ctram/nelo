@@ -30,6 +30,6 @@ export default class Comments extends React.Component {
 
 Comments.defaultProps = {
   comments: [],
-  currentUser: {},
+
   bylineType: null
 };

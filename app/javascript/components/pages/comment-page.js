@@ -17,16 +17,24 @@ export default class CommentPage extends React.Component {
     } else {
       dom = (
         <div>
-          <Comment comment={comment} currentUser={currentUser} onClickDelete={this.onClickDelete} bylineType="with entry link"/>
+          <Comment
+            comment={comment}
+            currentUser={currentUser}
+            onClickDelete={this.onClickDelete}
+            bylineType="with entry link"
+          />
         </div>
       );
     }
 
-    return <div className="comment-page px-5">{dom}</div>;
+    return (
+      <div className="comment-page row justify-content-center">
+        <div className="col-6">{dom}</div>
+      </div>
+    );
   }
 }
 
 CommentPage.defaultProps = {
-  comment: {},
-  currentUser: {}
+  comment: {}
 };

@@ -12,7 +12,10 @@ export default class Entries extends React.Component {
 
     if (entries.length > 0) {
       entriesDOM = entries.map(entry => {
-        const isAuthor = currentUser.id === entry.author.id;
+        let isAuthor = false;
+        if (currentUser) {
+          isAuthor = currentUser.id === entry.author.id;
+        }
 
         return (
           <Entry
@@ -34,6 +37,5 @@ export default class Entries extends React.Component {
 }
 
 Entries.defaultProps = {
-  entries: [],
-  currentUser: {}
+  entries: []
 };

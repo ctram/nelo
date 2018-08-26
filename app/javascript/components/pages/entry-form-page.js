@@ -18,6 +18,5 @@ export default class EntryFormPage extends React.Component {
 }
 
 EntryFormPage.defaultProps = {
-  user: {},
-  currentUser: {}
+  user: {}
 };

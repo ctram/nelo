@@ -13,13 +13,6 @@ export default class EntriesPage extends React.Component {
     const { entries, currentUser, user, paginationDetails } = this.props;
     const baseURL = `/users/${user.id}/entries?entry_page=`;
 
-    const {
-      num_pages: numPages,
-      start_page: startPage,
-      end_page: endPage,
-      page
-    } = paginationDetails.entries_pagination;
-
     return (
       <ErrorBoundary>
         <div className="entries-page">
@@ -29,13 +22,7 @@ export default class EntriesPage extends React.Component {
           <div className="entries-page__entries">
             <h1 className="mb-5">Entries</h1>
             <Entries entries={entries} currentUser={currentUser} user={user} />
-            <Pagination
-              numPages={numPages}
-              page={page}
-              startPage={startPage}
-              endPage={endPage}
-              baseURL={baseURL}
-            />
+            <Pagination {...paginationDetails.entries_pagination} baseURL={baseURL} />
           </div>
         </div>
       </ErrorBoundary>
@@ -46,7 +33,7 @@ export default class EntriesPage extends React.Component {
 EntriesPage.defaultProps = {
   entries: [],
   user: {},
-  currentUser: {},
+
   numEntryPages: 1,
   currentEntriesPageNum: 1
 };

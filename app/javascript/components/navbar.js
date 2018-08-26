@@ -15,7 +15,7 @@ export default class Navbar extends React.Component {
           <a className="navbar-brand" href="/">
             Nelo
           </a>
-          {currentUser && <span className="ml-3">{currentUser.email}</span>}
+          {currentUser && <span className="ml-3">{currentUser.username}</span>}
           <button
             className="navbar-toggler"
             type="button"

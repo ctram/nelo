@@ -35,6 +35,5 @@ export default class FrontPage extends React.Component {
 
 FrontPage.defaultProps = {
   entries: [],
-  comments: [],
-  currentUser: {}
+  comments: []
 };
