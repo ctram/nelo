@@ -1,10 +1,36 @@
 import React from 'react';
 import MarkupHelpers from './helpers/markup-helpers';
+import EntryActions from '../actions/entry-actions';
 import CONSTANTS from '../constants';
 
 export default class Entry extends React.Component {
   constructor(props) {
     super(props);
+    this.onClickDelete = this.onClickDelete.bind(this);
+  }
+
+  onClickDelete() {
+    const { entry, currentUser } = this.props;
+
+    const result = window.confirm(`Are you sure you want to delete "${entry.title}"?`);
+
+    if (result) {
+      EntryActions.deleteEntry(entry.id)
+        .then(res => {
+          if (res.ok) {
+            toastr.success('Entry deleted.');
+            return setTimeout(() => {
+              window.location.href =
+                CONSTANTS.APP_DOMAIN_URL + '/users/' + currentUser.id + '/entries';
+            }, CONSTANTS.DELAY_BEFORE_REDIRECT);
+          }
+          toastr.info(res.status);
+        })
+        .catch(e => {
+          toastr.error(e);
+          console.error(e);
+        });
+    }
   }
 
   render() {
@@ -30,7 +56,7 @@ export default class Entry extends React.Component {
     let titleDOM = <h4 className="d-inline">{entryTitle}</h4>;
 
     if (entry.id && titleAsLink) {
-      const entryURL = CONSTANTS.appDomainURL + '/entries/' + entry.id;
+      const entryURL = CONSTANTS.APP_DOMAIN_URL + '/entries/' + entry.id;
       titleDOM = <a href={entryURL}>{titleDOM}</a>;
     }
 
@@ -40,7 +66,9 @@ export default class Entry extends React.Component {
           {titleDOM}
           {badgeDOM}
           <div>
-            <a href={CONSTANTS.appDomainURL + '/users/' + entry.author.id + '/entries'}>{entry.author.email}</a>
+            <a href={CONSTANTS.APP_DOMAIN_URL + '/users/' + entry.author.id + '/entries'}>
+              {entry.author.email}
+            </a>
           </div>
           <div
             className="entry__content"
@@ -49,7 +77,10 @@ export default class Entry extends React.Component {
         </div>
         <div className={`entry__actions ${type === 'show-page' ? 'mb-3' : ''}`}>
           {canEdit && (
-            <a className="btn btn-outline-primary btn-sm mr-3" href={CONSTANTS.appDomainURL + `/entries/${entry.id}/edit`}>
+            <a
+              className="btn btn-outline-primary btn-sm mr-3"
+              href={CONSTANTS.APP_DOMAIN_URL + `/entries/${entry.id}/edit`}
+            >
               Edit
             </a>
           )}
@@ -57,9 +88,7 @@ export default class Entry extends React.Component {
             <button
               role="button"
               className="btn btn-outline-danger btn-sm"
-              onClick={() => {
-                this.props.onClickDelete(this.props.entry.id);
-              }}
+              onClick={this.onClickDelete}
             >
               Delete
             </button>

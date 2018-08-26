@@ -2,17 +2,23 @@ import React from 'react';
 import Comment from './comment';
 
 export default class Comments extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    const { comments } = this.props;
+    const { comments, currentUser, bylineType } = this.props;
     let commentsDOM;
 
     if (comments.length > 0) {
       commentsDOM = comments.map(comment => {
-        return <Comment comment={comment} key={comment.id} />;
+        return (
+          <Comment
+            comment={comment}
+            key={comment.id}
+            currentUser={currentUser}
+            onClickDelete={() => {
+              this.onClickDelete(comment.id);
+            }}
+            bylineType={bylineType}
+          />
+        );
       });
     } else {
       commentsDOM = <h5 className="text-center">No comments.</h5>;
@@ -23,5 +29,7 @@ export default class Comments extends React.Component {
 }
 
 Comments.defaultProps = {
-  comments: []
+  comments: [],
+  currentUser: {},
+  bylineType: null
 };

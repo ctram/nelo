@@ -23,7 +23,7 @@ function PageItem(props) {
 
 export default class Pagination extends React.Component {
   render() {
-    let { numPages, baseURL, page, startPage, endPage } = this.props;
+    let { num_pages: numPages, baseURL, page, start_page: startPage, end_page: endPage } = this.props;
     let pageItems = [];
 
     if (numPages <= 1) {

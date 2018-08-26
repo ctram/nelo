@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from './modal';
 
-export default class ModalConfirmDeleteEntry extends React.Component {
+export default class ModalConfirmDelete extends React.Component {
   render() {
     const { visible } = this.props;
 

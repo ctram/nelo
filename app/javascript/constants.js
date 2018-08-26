@@ -1,3 +1,4 @@
 export default {
-  appDomainURL: 'http://localhost:3000'
+  APP_DOMAIN_URL: 'http://localhost:3000',
+  DELAY_BEFORE_REDIRECT: 1000
 };
