@@ -5,6 +5,8 @@ module API
       expose :email
       expose :role
       expose :profile_image_url
+      expose :about
+      expose :spirit_animal
     end
   end
 end

@@ -1,14 +1,13 @@
-function generateContentDOM(content) {
+function sanitizeContent(content) {
   return content
     .replace(/<|>/g, '') // TODO: determine way for user to safely use brackets
     .replace(/\r\n/g, '<br/>')
     .replace(/ /g, '&nbsp;');
 }
-function createMarkup(content) {
-  return { __html: generateContentDOM(content) };
+function createHTML(content) {
+  return { __html: sanitizeContent(content) };
 }
 
 export default {
-  createMarkup,
-  generateContentDOM
+  createHTML
 };

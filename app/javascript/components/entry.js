@@ -72,7 +72,7 @@ export default class Entry extends React.Component {
           </div>
           <div
             className="entry__content"
-            dangerouslySetInnerHTML={MarkupHelpers.createMarkup(entryContent)}
+            dangerouslySetInnerHTML={MarkupHelpers.createHTML(entryContent)}
           />
         </div>
         <div className={`entry__actions ${type === 'show-page' ? 'mb-3' : ''}`}>

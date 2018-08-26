@@ -45,6 +45,13 @@ export default class Navbar extends React.Component {
               )}
               {currentUser && (
                 <li className="nav-item">
+                  <a className="nav-link" href={`/users/${currentUser.id}`}>
+                    Profile
+                  </a>
+                </li>
+              )}
+              {currentUser && (
+                <li className="nav-item">
                   <a className="nav-link" href={`/users/${currentUser.id}/entries/new`}>
                     Add Entry
                   </a>

@@ -7,7 +7,6 @@ import CONSTANTS from '../../constants';
 export default class EntryFormPage extends React.Component {
   render() {
     const { comments, currentUser, paginationDetails } = this.props;
-    debugger;
 
     return (
       <ErrorBoundary>

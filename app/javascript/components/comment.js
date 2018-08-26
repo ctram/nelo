@@ -47,16 +47,13 @@ export default class Comment extends React.Component {
           </div>
         );
         break;
-      case 'with entry link':
+      default:
         bylineDOM = (
           <div className="d-inline">
             <strong>{comment.author.email}</strong> commented on{' '}
             <a href={'/entries/' + comment.entry.id}>{comment.entry.title}</a>
           </div>
         );
-        break;
-      default:
-        bylineDOM = null;
     }
 
     return (
@@ -87,7 +84,7 @@ export default class Comment extends React.Component {
         </div>
         <div
           className="comment__content my-3 ml-3 p-3"
-          dangerouslySetInnerHTML={MarkupHelpers.createMarkup(comment.content)}
+          dangerouslySetInnerHTML={MarkupHelpers.createHTML(comment.content)}
         />
       </div>
     );
@@ -97,5 +94,5 @@ export default class Comment extends React.Component {
 Comment.defaultProps = {
   comment: {},
   currentUser: {},
-  bylineType: 'says'
+  bylineType: 'with entry link'
 };

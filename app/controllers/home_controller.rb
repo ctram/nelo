@@ -8,8 +8,8 @@ class HomeController < ApplicationController
   
   def index
     if signed_in?
-      entries = Entry.with_user_entries(current_user)
-      @comments = Comment.with_user_comments(current_user)
+      entries = Entry.viewable_by(current_user)
+      @comments = Comment.viewable_by(current_user)
     else
       entries = Entry.privacy_public
       @comments = Comment.privacy_public

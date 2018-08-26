@@ -13,7 +13,7 @@ class EntriesController < ApplicationController
       entries = current_user.entries.reverse_order
       comments = current_user.comments.reverse_order
     elsif signed_in?
-      entries = user.viewable_entries_for(current_user).reverse_order
+      entries = user.viewable_by(current_user).reverse_order
       comments = user.viewable_comments_for(current_user).reverse_order
     else
       entries = user.entries.privacy_public.reverse_order

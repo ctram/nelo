@@ -15,17 +15,17 @@ export default class FrontPage extends React.Component {
 
     return (
       <ErrorBoundary>
-        <div className="front-page p-3">
-          <h1 className="text-center mb-5">Front Page</h1>
-          <div className="front-page__latest-entries my-5">
-            <Pagination {...paginationDetails} baseURL={baseURL} />
-            <h2 className="mb-3 text-center">Latest Entries</h2>
-            <Entries entries={entries} currentUser={currentUser} />
-            <Pagination {...paginationDetails} baseURL={baseURL} />
-          </div>
-          <div className="front-page__latest-comments">
-            <h2 className="mb-3 text-center">Latest Comments</h2>
-            <Comments comments={comments} />
+        <div className="front-page p-3 row justify-content-center">
+          <div className="col-6">
+            <div className="front-page__latest-entries mb-5">
+              <h2 className="mb-3 text-center mb-3">Latest Entries</h2>
+              <Entries entries={entries} currentUser={currentUser} />
+              <Pagination {...paginationDetails} baseURL={baseURL} />
+            </div>
+            <div className="front-page__latest-comments mt-5">
+              <h2 className="mb-3 text-center">Latest Comments</h2>
+              <Comments comments={comments} bylineType="with entry link" />
+            </div>
           </div>
         </div>
       </ErrorBoundary>
