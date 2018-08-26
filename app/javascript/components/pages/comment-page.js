@@ -17,7 +17,7 @@ export default class CommentPage extends React.Component {
     } else {
       dom = (
         <div>
-          <Comment comment={comment} currentUser={currentUser} onClickDelete={this.onClickDelete} />
+          <Comment comment={comment} currentUser={currentUser} onClickDelete={this.onClickDelete} bylineType="with entry link"/>
         </div>
       );
     }

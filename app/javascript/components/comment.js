@@ -42,14 +42,14 @@ export default class Comment extends React.Component {
         break;
       case 'says':
         bylineDOM = (
-          <div>
+          <div className="d-inline">
             <strong>{comment.author.email}</strong> says:
           </div>
         );
         break;
       case 'with entry link':
         bylineDOM = (
-          <div>
+          <div className="d-inline">
             <strong>{comment.author.email}</strong> commented on{' '}
             <a href={'/entries/' + comment.entry.id}>{comment.entry.title}</a>
           </div>
@@ -79,12 +79,12 @@ export default class Comment extends React.Component {
           </div>
         )}
 
-        <div className="message__byline">{bylineDOM}</div>
-        {comment.privacy_level === 'private' && (
-          <div>
-            <span className="badge badge-secondary">Private</span>
-          </div>
-        )}
+        <div className="message__byline">
+          {comment.privacy_level === 'private' && (
+            <span className="badge badge-secondary mr-3">Private</span>
+          )}
+          {bylineDOM}
+        </div>
         <div
           className="comment__content my-3 ml-3 p-3"
           dangerouslySetInnerHTML={MarkupHelpers.createMarkup(comment.content)}
