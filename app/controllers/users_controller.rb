@@ -10,25 +10,28 @@ class UsersController < ApplicationController
     pagination_details = PaginationHelper.pagination_details(users, page)
     @user = pagination_details.delete(:paginated_query)
     @pagination_details = pagination_details
-    @users = UserEntity.represent(@users).as_json
+    @users = API::Entities::UserEntity.represent(@users).as_json
   end
 
   def show
     @user = User.find(params[:id])
-    @user = UserEntity.represent(@user).as_json
+    @user = API::Entities::UserEntity.represent(@user).as_json
+    @edit_mode = false
   end
 
   def edit
     @user = User.find(params[:id])
     can? :edit, @user
-    @user = UserEntity.represent(@user).as_json
+    @user = API::Entities::UserEntity.represent(@user).as_json
+    @edit_mode = true
+    render :show
   end
   
   def update
     @user = User.find(params[:id])
     can? :update, @user
     @user.update(user_params)
-    @user = UserEntity.represent(@user).as_json
+    @user = API::Entities::UserEntity.represent(@user).as_json
     render :show
   end
 
@@ -41,7 +44,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email)
+    params.require(:user).permit(:email, :about, :spirit_animal)
   end
   
 end
