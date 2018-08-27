@@ -6,19 +6,19 @@ class FriendshipsController < ApplicationController
     friender_id = current_user.id
     friendship = Friendship.where('friendee_id IN (?) AND friender_id IN (?)', [friendee_id, friender_id], [friendee_id, friender_id]).first
 
-    if @friendship.nil?
+    if friendship.nil?
       friendship = Friendship.create(friender_id: current_user.id, friendee_id: friendee_id, friender_status: 'confirmed')
       status = 201
     else
-      status = 204
+      status = 200
     end
 
-    render status: status, json: { friendship: API::Entities::FriendshipEntity.represent(friendship) }
+    render json: { friendship: API::Entities::FriendshipEntity.represent(friendship) }, status: status
   end
 
   def show
-    friendee_id = params[:friendee_id]
-    friender_id = params[:friender_id]
+    friendee_id = friendship_params[:friendee_id]
+    friender_id = friendship_params[:friender_id]
     id = params[:id]
 
     if id 
