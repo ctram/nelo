@@ -1,8 +1,10 @@
 class Friendship < ApplicationRecord
-  validates_presence_of :friend_id, :user_id
+  validates_presence_of :friender_id, :friendee_id
 
-  belongs_to :friender, class_name: User, foreign_key: :user_id
-  belongs_to :friendee, class_name: User, foreign_key: :friend_id
+  belongs_to :friender, class_name: User, foreign_key: :friender_id
+  belongs_to :friendee, class_name: User, foreign_key: :friendee_id
+
+  validate :cannot_friend_self
 
   # def update_status(user, action)
   #   unless [:pending, :confirmed, :denied].include? action.to_sym
@@ -35,6 +37,14 @@ class Friendship < ApplicationRecord
       'denied'
     else
       'not_friends'
+    end
+  end
+
+  private
+
+  def cannot_friend_self
+    if friender_id == friendee_id
+      errors.add(:friendee_id, 'cannot friend self')
     end
   end
 end

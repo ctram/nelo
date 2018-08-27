@@ -2,7 +2,6 @@
 
 class Users::SessionsController < Devise::SessionsController
   skip_before_action :redirect_if_not_logged_in, only: [:new, :create]
-  
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
@@ -24,10 +23,12 @@ class Users::SessionsController < Devise::SessionsController
   #   puts "current user in destroy after signout #{current_user && current_user.email}"
   # end
 
-  # protected
+  protected
 
   # # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_in_params
-  #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
-  # end
+  def configure_sign_in_params
+    devise_parameter_sanitizer.permit(:sign_in) do |user_params|
+      user_params.permit(:username)
+    end
+  end
 end

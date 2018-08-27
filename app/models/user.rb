@@ -5,11 +5,14 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :entries, dependent: :destroy, foreign_key: 'author_id'
+  has_many :comments_as_author, dependent: :destroy, foreign_key: 'author_id', class_name: 'Comment'
+  has_many :comments_as_recipient, dependent: :destroy, foreign_key: 'recipient_id', class_name: 'Comment'
+
   has_and_belongs_to_many :friends,
                           join_table: :friendships,
                           class_name: User,
-                          foreign_key: :user_id,
-                          association_foreign_key: :friend_id
+                          foreign_key: :friender_id,
+                          association_foreign_key: :friendee_id
 
   validates_presence_of :username, :email
 
@@ -37,10 +40,6 @@ class User < ApplicationRecord
     private_comments
   end
 
-  def all_comments
-    comments
-  end
-
   def friend?(user)
     friends.where(friend_id: user.id, status: 'confirmed')
   end
@@ -49,15 +48,7 @@ class User < ApplicationRecord
     role == 'admin'
   end
 
-  def comments(type = nil)
-    comments = Comment.where('author_id = ? OR recipient_id = ?', id.to_s, id.to_s) if type.nil?
-
-    if type == :author 
-      return comments.where('author_id = ?', id.to_s)
-    elsif type == :recipient
-      return comment.where('recipient_id = ?', id.to_s)
-    end
-
-    comments
+  def comments
+    Comment.where('author_id = ? OR recipient_id = ?', id.to_s, id.to_s)
   end
 end

@@ -6,7 +6,7 @@ export default class ProfileAside extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      friendStatus: null
+      friendship: props.friendship
     };
     this.checkFriendStatus = this.checkFriendStatus.bind(this);
     this.onClickFriend = this.onClickFriend.bind(this);
@@ -29,7 +29,7 @@ export default class ProfileAside extends React.Component {
         })
         .then(({ friendship }) => {
           this.setState({
-            friendStatus: friendship && friendship.status
+            friendship: friendship || { status: 'not_friends' }
           });
         })
         .catch(e => {
@@ -59,7 +59,7 @@ export default class ProfileAside extends React.Component {
             toastr.success('Friend Request Sent.');
             break;
         }
-        this.setState({ friendStatus: friendship.status });
+        this.setState({ friendship });
       })
       .catch(e => {
         toastr.error('Error occurred while friending.');
@@ -78,7 +78,7 @@ export default class ProfileAside extends React.Component {
       .then(({ friendship }) => {
         toastr.success('Unfriended.');
         this.setState({
-          friendStatus: friendship.status
+          friendship
         });
       })
       .catch(e => {
@@ -89,23 +89,24 @@ export default class ProfileAside extends React.Component {
 
   onClickFriend() {
     const { user } = this.props;
-    const { friendStatus } = this.state;
+    const {
+      friendship: { status }
+    } = this.state;
 
-    if (friendStatus === 'not_friends') {
+    if (status === 'not_friends') {
       this.requestFriend(user.id);
-    } else if (friendStatus === 'confirmed' || friendStatus === 'pending') {
+    } else if (status === 'confirmed' || status === 'pending') {
       this.requestUnfriend(user.id);
     }
   }
 
   render() {
-    const { friendStatus } = this.state;
+    const { friendship } = this.state;
     const { user, currentUser } = this.props;
     let friendButtonDisabled = false;
-
     let friendButtonText;
 
-    switch (friendStatus) {
+    switch (friendship.status) {
       case 'not_friends':
         friendButtonText = 'Friend';
         break;
@@ -131,17 +132,18 @@ export default class ProfileAside extends React.Component {
           src={user.profile_image_url}
           alt="No User Image"
         />
-        {currentUser && (
-          <div className="profile-aside__actions mt-5">
-            <button
-              className="btn btn-primary"
-              onClick={this.onClickFriend}
-              disabled={friendButtonDisabled}
-            >
-              {friendButtonText}
-            </button>
-          </div>
-        )}
+        {currentUser &&
+          currentUser.id !== user.id && (
+            <div className="profile-aside__actions mt-5">
+              <button
+                className="btn btn-primary"
+                onClick={this.onClickFriend}
+                disabled={friendButtonDisabled}
+              >
+                {friendButtonText}
+              </button>
+            </div>
+          )}
         <div className="profile-aside__details mt-5">
           <h2>About</h2>
           <div dangerouslySetInnerHTML={MarkupHelper.createHTML(user.about)} />
@@ -154,5 +156,5 @@ export default class ProfileAside extends React.Component {
 }
 
 ProfileAside.defaultProps = {
-  user: {}
+  friendship: {}
 };

@@ -7,7 +7,7 @@ class FriendshipsController < ApplicationController
     friendship = Friendship.where('friendee_id IN (?) AND friender_id IN (?)', [friendee_id, friender_id], [friendee_id, friender_id]).first
 
     if @friendship.nil?
-      friendship = Friendship.create(friender_id: current_user.id, friendee_id: friendee_id, friender_status: 'friendee_status')
+      friendship = Friendship.create(friender_id: current_user.id, friendee_id: friendee_id, friender_status: 'confirmed')
       status = 201
     else
       status = 204
