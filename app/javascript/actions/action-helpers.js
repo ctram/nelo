@@ -2,10 +2,18 @@ const authenticityToken = document.getElementsByTagName('meta')[1].getAttribute(
 const headers = new Headers();
 headers.append('Content-Type', 'application/x-www-form-urlencoded');
 
-function generateBody(method) {
-  return `authenticity_token=${encodeURIComponent(
+function generateBody(method, keyValuePairs = []) {
+  const base = `authenticity_token=${encodeURIComponent(
     authenticityToken
   )}&utf8=✓&_method=${method.toUpperCase()}`;
+
+  let additionalPairs = [];
+
+  for (let pair of keyValuePairs) {
+    additionalPairs.push(`${pair.key}=${pair.value}`);
+  }
+
+  return base + `&${additionalPairs.join('&')}`;
 }
 
 function newFormRequest(destinationURL, body) {

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root 'home#index'
+
   # devise_for :users
   devise_for :users, controllers: {
     sessions: 'users/sessions',
@@ -10,5 +12,7 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  root 'home#index'
+  get 'friendships', to: 'friendships#show'
+
+  resources :friendships
 end

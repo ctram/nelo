@@ -17,7 +17,7 @@ export default class EntriesPage extends React.Component {
       <ErrorBoundary>
         <div className="entries-page">
           <div className="entries-page__profile-aside">
-            <ProfileAside user={user} />
+            <ProfileAside user={user} currentUser={currentUser} />
           </div>
           <div className="entries-page__entries">
             <h1 className="mb-5">Entries</h1>
