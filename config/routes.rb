@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   end
 
   get 'friendships', to: 'friendships#show'
+  patch 'friendships', to: 'friendships#update'
 
   resources :friendships
 end

@@ -31,9 +31,19 @@ class FriendshipsController < ApplicationController
   end
 
   def update
-    friendship = Friendship.find(params[:id])
+    user = User.find(params[:user_id])
+    unless user
+      return render status: 422, json: { message: 'User not found as friend.' }
+    end
+    
+    friendship = Friendship.where('friender_id IN (?) AND friendee_id IN (?)', [user.id, current_user.id], [user.id, current_user.id]).first
+    unless friendship 
+      return render status: 422, json: { message: 'Frienship not found.' }
+    end
+    
+    friendship_action = params[:friendship_action].to_sym
     can? :update, friendship
-    friendship.update(friendship_params)
+    friendship = friendship.update_status!(current_user, friendship_action)
     render json: { friendship: API::Entities::FriendshipEntity.represent(friendship) }
   end
 

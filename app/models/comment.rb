@@ -4,7 +4,7 @@ class Comment < ApplicationRecord
 
   scope :privacy_public, -> { where(privacy_level: 'public') }
   scope :privacy_private, -> { where(privacy_level: 'private') }
-  scope :viewable_by, ->(user) { where('privacy_level = ? OR author_id = ? OR recipient_id = ?', 'public', user.id, user.id) }
+  scope :viewable_by, ->(user) { where('privacy_level = ? OR author_id = ? OR recipient_id = ?', 'public', user.id.to_s, user.id.to_s) }
 
   belongs_to :author,     class_name: 'User', foreign_key: 'author_id'
   belongs_to :recipient,  class_name: 'User', foreign_key: 'recipient_id'

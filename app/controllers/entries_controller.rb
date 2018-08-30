@@ -16,8 +16,8 @@ class EntriesController < ApplicationController
       entries = Entry.viewable_by(current_user).reverse_order
       comments = Comment.viewable_by(current_user).reverse_order
     else
-      entries = Entry.entries.privacy_public.reverse_order
-      comments = Comment.comments.privacy_public.reverse_order
+      entries = Entry.privacy_public.reverse_order
+      comments = Comment.privacy_public.reverse_order
     end
     
     entries_pagination = PaginationHelper.pagination_details(entries, params[:entry_page])

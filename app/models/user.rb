@@ -4,17 +4,15 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  validates_presence_of :username, :email
+
   has_many :entries, dependent: :destroy, foreign_key: 'author_id'
   has_many :comments_as_author, dependent: :destroy, foreign_key: 'author_id', class_name: 'Comment'
   has_many :comments_as_recipient, dependent: :destroy, foreign_key: 'recipient_id', class_name: 'Comment'
 
-  has_and_belongs_to_many :friends,
-                          join_table: :friendships,
-                          class_name: User,
-                          foreign_key: :friender_id,
-                          association_foreign_key: :friendee_id
-
-  validates_presence_of :username, :email
+  def friendships
+    Friendship.where('friendee_id = ? OR friender_id = ?', id.to_s, id.to_s)
+  end
 
   def public_comments(type = nil)
     public_comments = comments.privacy_public

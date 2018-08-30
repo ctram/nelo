@@ -6,17 +6,21 @@ class Friendship < ApplicationRecord
 
   validate :cannot_friend_self
 
-  # def update_status(user, action)
-  #   unless [:pending, :confirmed, :denied].include? action.to_sym
-  #     raise 'friend status not one of acceptable types'
-  #   end
+  def update_status!(user, action)
+    unless [:confirm, :deny].include? action.to_sym
+      raise 'friend action is not one of the acceptable types.'
+    end
+
+    action = action == :confirm ? :confirmed : :denied
     
-  #   if user.id == user_id
-  #     update(friender_status: action)
-  #   elsif user.id == friend_id
-  #     update(friendee_status: action)
-  #   end
-  # end
+    if user.id == friender.id
+      update(friender_status: action)
+    elsif user.id == friendee.id
+      update(friendee_status: action)
+    else
+      raise 'user is not a friender or friendee'
+    end
+  end
 
   def role(user)
     if user == friender
@@ -31,10 +35,10 @@ class Friendship < ApplicationRecord
   def status
     if friender_status == 'confirmed' && friendee_status.to_sym == 'confirmed'
       'confirmed'
-    elsif friender_status == 'pending' || friendee_status == 'pending'
-      'pending'
     elsif friender_status == 'denied' || friendee_status == 'denied'
       'denied'
+    elsif friender_status == 'pending' || friendee_status == 'pending'
+      'pending'
     else
       'not_friends'
     end
