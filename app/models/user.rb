@@ -14,6 +14,12 @@ class User < ApplicationRecord
     Friendship.where('friendee_id = ? OR friender_id = ?', id.to_s, id.to_s)
   end
 
+  def friends
+    friendships.map do |fs|
+      fs.friender == self ? fs.friendee : fs.friender
+    end
+  end
+
   def public_comments(type = nil)
     public_comments = comments.privacy_public
     
