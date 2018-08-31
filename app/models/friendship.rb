@@ -5,6 +5,7 @@ class Friendship < ApplicationRecord
   belongs_to :friendee, class_name: User, foreign_key: :friendee_id
 
   validate :cannot_friend_self
+  validate :cannot_already_exist
 
   def update_status!(user, action)
     unless [:confirm, :deny].include? action.to_sym
@@ -49,6 +50,14 @@ class Friendship < ApplicationRecord
   def cannot_friend_self
     if friender_id == friendee_id
       errors.add(:friendee_id, 'cannot friend self')
+    end
+  end
+
+  def cannot_already_exist
+    friendship = Friendship.where('friendee_id IN (?) AND friender_id IN (?)', [friendee_id, friender_id], [friendee_id, friender_id]).first
+
+    if friendship
+      errors.add(:friendee_id, 'friendship already exists for these users')
     end
   end
 end
