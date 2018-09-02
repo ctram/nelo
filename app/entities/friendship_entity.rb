@@ -6,9 +6,9 @@ module API
       expose :friender, using: API::Entities::UserEntity
       expose :friendee, using: API::Entities::UserEntity
       expose :updated_at
-      expose :friender_status
       expose :friendee_status
       expose :status
+      expose :id
     end
   end
 end

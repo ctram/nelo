@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  validates_presence_of :username, :email
+  validates :username, :email, presence: true, uniqueness: true
 
   has_many :entries, dependent: :destroy, foreign_key: 'author_id'
   has_many :comments_as_author, dependent: :destroy, foreign_key: 'author_id', class_name: 'Comment'

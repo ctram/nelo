@@ -6,12 +6,16 @@ export default class ProfileAside extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      friendship: props.friendship
+      friendship: props.friendship,
+      friendButtonDisabled: true
     };
     this.checkFriendStatus = this.checkFriendStatus.bind(this);
     this.friendButtonData = this.friendButtonData.bind(this);
+    this.friendButtonDataAsFriender = this.friendButtonDataAsFriender.bind(this);
+    this.friendButtonDataAsFriendee = this.friendButtonDataAsFriendee.bind(this);
     this.friendRequest = this.friendRequest.bind(this);
     this.unfriendRequest = this.unfriendRequest.bind(this);
+    this.deleteFriendRequest = this.deleteFriendRequest.bind(this);
     this.handleResponse = this.handleResponse.bind(this);
   }
 
@@ -32,7 +36,8 @@ export default class ProfileAside extends React.Component {
         })
         .then(({ friendship }) => {
           this.setState({
-            friendship: friendship || { status: 'not_friends' }
+            friendship,
+            friendButtonDisabled: false
           });
         })
         .catch(e => {
@@ -48,11 +53,13 @@ export default class ProfileAside extends React.Component {
     const { friendship } = this.state;
     const { user } = this.props;
     let promise;
-    const successMessage = 'Friend Request Sent.';
+    let successMessage;
 
     if (friendship) {
+      successMessage = 'Friend Accepted.';
       promise = FriendActions.updateFriendshipRequest(user.id, 'confirm');
     } else {
+      successMessage = 'Friend Request Sent.';
       promise = FriendActions.createFriendshipRequest(user.id);
     }
     return this.handleResponse(promise, successMessage);
@@ -60,15 +67,21 @@ export default class ProfileAside extends React.Component {
 
   unfriendRequest() {
     const { user } = this.props;
-    let promise = FriendActions.updateFriendshipRequest(user.id, 'deny');
-    return this.handleResponse(promise);
+    let promise = FriendActions.updateFriendshipRequest(user.id, 'unconfirm');
+    return this.handleResponse(promise, 'Unfriended.');
+  }
+
+  deleteFriendRequest() {
+    const { friendship } = this.state;
+    let promise = FriendActions.deleteFriendRequest(friendship.id);
+    return this.handleResponse(promise, 'Unfriended.');
   }
 
   handleResponse(promise, doneMessage) {
     return promise
       .then(res => {
         if (res.ok) {
-          return res.json();
+          return res.status === 204 ? { friendship: null } : res.json();
         }
         return Promise.reject('Error occurred processing request.');
       })
@@ -84,47 +97,64 @@ export default class ProfileAside extends React.Component {
       .catch(toastr.error);
   }
 
-  friendButtonData() {
+  friendButtonDataAsFriender(data) {
+    let friendButtonText;
     const { friendship } = this.state;
+
+    if (friendship.status === 'pending') {
+      friendButtonText = 'Cancel Friend Request';
+    } else if (friendship.status === 'confirmed') {
+      friendButtonText = 'Unfriend';
+    }
+
+    return Object.assign(data, {
+      friendButtonText,
+      friendButtonOnClick: this.deleteFriendRequest
+    });
+  }
+
+  friendButtonDataAsFriendee(data) {
+    const { friendship } = this.state;
+    if (friendship.status === 'pending') {
+      data = Object.assign(data, {
+        friendButtonText: 'Accept Friend Request',
+        friendButtonOnClick: this.friendRequest
+      });
+    } else if (friendship.status === 'confirmed') {
+      data = Object.assign(data, {
+        friendButtonText: 'Unfriend',
+        friendButtonOnClick: this.unfriendRequest
+      });
+    }
+
+    return data;
+  }
+
+  friendButtonData() {
     const { currentUser } = this.props;
-    let data = { disabled: true, onClick: () => {}, buttonText: 'Friend' };
+    const { friendship } = this.state;
+    let data = {
+      friendButtonText: 'Friend',
+      friendButtonOnClick: this.friendRequest
+    };
 
     if (!friendship) {
       return data;
     }
 
-    data.disabled = false;
-    switch (friendship.status) {
-      case 'not_friends':
-        data = Object.assign(data, { onClick: this.friendRequest, buttonText: 'Friend' });
-        break;
-      case 'confirmed':
-        data = Object.assign(data, { onClick: this.unfriendRequest, buttonText: 'Unfriend' });
-        break;
-      case 'pending':
-      case 'denied':
-        if (currentUser.id === friendship.friender.id) {
-          data = Object.assign(data, {
-            onClick: this.unfriendRequest,
-            buttonText: 'Cancel Friend Request'
-          });
-        } else if (currentUser.id === friendship.friendee.id) {
-          data = Object.assign(data, {
-            onClick: this.friendRequest,
-            buttonText: 'Confirm Friend Request'
-          });
-        }
+    if (currentUser.id === friendship.friender.id) {
+      data = this.friendButtonDataAsFriender(data);
+    } else {
+      data = this.friendButtonDataAsFriendee(data);
     }
+
     return data;
   }
 
   render() {
     const { user, currentUser } = this.props;
-    const {
-      buttonText: friendButtonText,
-      disabled: friendButtonDisabled,
-      onClick: onClickFriend
-    } = this.friendButtonData();
+    const { friendButtonDisabled } = this.state;
+    const { friendButtonText, friendButtonOnClick } = this.friendButtonData();
 
     return (
       <aside className="profile-aside px-5">
@@ -141,7 +171,7 @@ export default class ProfileAside extends React.Component {
             <div className="profile-aside__actions mt-5">
               <button
                 className="btn btn-primary"
-                onClick={onClickFriend}
+                onClick={friendButtonOnClick}
                 disabled={friendButtonDisabled}
               >
                 {friendButtonText}
@@ -160,5 +190,5 @@ export default class ProfileAside extends React.Component {
 }
 
 ProfileAside.defaultProps = {
-  friendship: {}
+  friendship: null
 };

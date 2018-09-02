@@ -3,7 +3,10 @@ import ActionHelpers from './action-helpers';
 
 function updateFriendshipRequest(userID, action) {
   const destinationURL = CONSTANTS.APP_DOMAIN_URL + `/friendships`;
-  const body = ActionHelpers.generateBody('PATCH', [{ key: 'friendship_action', value: action }, { key: 'user_id', value: userID }]);
+  const body = ActionHelpers.generateBody('PATCH', [
+    { key: 'friendship_action', value: action },
+    { key: 'user_id', value: userID }
+  ]);
   const request = ActionHelpers.newFormRequest(destinationURL, body);
   return fetch(request);
 }
@@ -27,8 +30,16 @@ function checkFriendStatus(frienderID, friendeeID) {
   return fetch(request);
 }
 
+function deleteFriendRequest(friendshipID) {
+  const destinationURL = CONSTANTS.APP_DOMAIN_URL + `/friendships/` + friendshipID;
+  const body = ActionHelpers.generateBody('DELETE');
+  const request = ActionHelpers.newFormRequest(destinationURL, body);
+  return fetch(request);
+}
+
 export default {
   createFriendshipRequest,
   checkFriendStatus,
-  updateFriendshipRequest
+  updateFriendshipRequest,
+  deleteFriendRequest
 };
