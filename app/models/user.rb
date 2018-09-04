@@ -10,6 +10,12 @@ class User < ApplicationRecord
   has_many :comments_as_author, dependent: :destroy, foreign_key: 'author_id', class_name: 'Comment'
   has_many :comments_as_recipient, dependent: :destroy, foreign_key: 'recipient_id', class_name: 'Comment'
 
+  def friend?(user)
+    friends.any? do |friend|
+      friend == user
+    end
+  end
+  
   def friendships
     Friendship.where('friendee_id = ? OR friender_id = ?', id.to_s, id.to_s)
   end
@@ -42,10 +48,6 @@ class User < ApplicationRecord
     end 
     
     private_comments
-  end
-
-  def friend?(user)
-    friends.where(friend_id: user.id, status: 'confirmed')
   end
 
   def admin?
