@@ -51,9 +51,9 @@ export default class Entry extends React.Component {
     }
 
     if (badgeContent) {
-      badgeDOM = <span className="badge badge-secondary ml-3">{badgeContent}</span>;
+      badgeDOM = <span className="badge badge-secondary mr-3">{badgeContent}</span>;
     }
-    let titleDOM = <h4 className="d-inline">{entryTitle}</h4>;
+    let titleDOM = <h3 className="d-inline">{entryTitle}</h3>;
 
     if (entry.id && titleAsLink) {
       const entryURL = CONSTANTS.APP_DOMAIN_URL + '/entries/' + entry.id;
@@ -63,36 +63,32 @@ export default class Entry extends React.Component {
     return (
       <div className={cssClass}>
         <div className="entry__details">
-          {titleDOM}
-          {badgeDOM}
-          <div>
+          <div className="entry__title-and-badge">
+            {badgeDOM}
+            {titleDOM}
+          </div>
+          <div className="entry__byline mb-3">
+            by{' '}
             <a href={CONSTANTS.APP_DOMAIN_URL + '/users/' + entry.author.id + '/entries'}>
               {entry.author.username}
             </a>
+          </div>
+          <div className={`entry__actions ${type === 'show-page' ? 'mb-3' : ''}`}>
+            {canEdit && (
+              <a className="mr-3" href={CONSTANTS.APP_DOMAIN_URL + `/entries/${entry.id}/edit`}>
+                Edit
+              </a>
+            )}
+            {canDelete && (
+              <a href="#" className="" onClick={this.onClickDelete}>
+                Delete
+              </a>
+            )}
           </div>
           <div
             className="entry__content"
             dangerouslySetInnerHTML={MarkupHelper.createHTML(entryContent)}
           />
-        </div>
-        <div className={`entry__actions ${type === 'show-page' ? 'mb-3' : ''}`}>
-          {canEdit && (
-            <a
-              className="btn btn-outline-primary btn-sm mr-3"
-              href={CONSTANTS.APP_DOMAIN_URL + `/entries/${entry.id}/edit`}
-            >
-              Edit
-            </a>
-          )}
-          {canDelete && (
-            <button
-              role="button"
-              className="btn btn-outline-danger btn-sm"
-              onClick={this.onClickDelete}
-            >
-              Delete
-            </button>
-          )}
         </div>
       </div>
     );

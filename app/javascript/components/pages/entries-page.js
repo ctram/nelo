@@ -20,7 +20,7 @@ export default class EntriesPage extends React.Component {
             <ProfileAside user={user} currentUser={currentUser} />
           </div>
           <div className="entries-page__entries">
-            <h1 className="mb-5">Entries</h1>
+            <h1 className="mb-3">Entries</h1>
             <Entries entries={entries} currentUser={currentUser} user={user} />
             <Pagination {...paginationDetails.entries_pagination} baseURL={baseURL} />
           </div>

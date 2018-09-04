@@ -29,7 +29,7 @@ export default class Entries extends React.Component {
         );
       });
     } else {
-      entriesDOM = <h4 className="text-center my-3">No entries.</h4>;
+      entriesDOM = <h4 className="my-3">No entries.</h4>;
     }
 
     return <div className="entries">{entriesDOM}</div>;
